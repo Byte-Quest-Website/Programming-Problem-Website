@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { TrpcProvider } from "@/core/utils/trpc-provider";
 
 export const metadata: Metadata = {
 	title: "FusionSid",
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body>{children}</body>
+			<body>
+				<TrpcProvider>{children}</TrpcProvider>
+			</body>
 		</html>
 	);
 }
