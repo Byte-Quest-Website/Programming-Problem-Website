@@ -5,7 +5,6 @@ import {
 import { appRouter } from "../trpc-router";
 
 const handler = (request: Request) => {
-    console.log(`incoming request ${request.url}`);
     return fetchRequestHandler({
         endpoint: "/api/trpc",
         req: request,
