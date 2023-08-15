@@ -4,14 +4,21 @@
 import { User } from "../api/trpc/trpc-router";
 import { trpc } from "@/core/utils/trpc";
 import React from "react";
+import { useSession } from "next-auth/react";
 
 export default function ListUsers() {
+    const { data: session } = useSession();
+
     let { data: users, isLoading, isFetching } = trpc.getUsers.useQuery();
 
     if (isLoading || isFetching || !users) {
         return <p>Loading...</p>;
     }
 
+    if (!session) {
+         return <div>unauthorized</div>
+    }
+    
     return (
         <div
             style={{
