@@ -1,7 +1,8 @@
 import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import GithubProvider from "next-auth/providers/github"
+import DiscordProvider from "next-auth/providers/discord";
+import GithubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import "dotenv/config";
@@ -19,6 +20,10 @@ export const authOptions: NextAuthOptions = {
             clientId: process.env.GITHUB_ID,
             clientSecret: process.env.GITHUB_SECRET,
         }),
+        DiscordProvider({
+            clientId: process.env.DISCORD_ID,
+            clientSecret: process.env.DISCORD_SECRET,
+        })
     ],
     secret: process.env.NEXTAUTH_SECRET,
 };

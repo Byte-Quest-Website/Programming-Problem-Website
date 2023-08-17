@@ -6,6 +6,8 @@ declare global {
             GOOGLE_SECRET: string;
             GITHUB_ID: string;
             GITHUB_SECRET: string;
+            DISCORD_ID: string;
+            DISCORD_SECRET: string;
             NEXTAUTH_SECRET: string;
             NEXTAUTH_URL: string;
         }
