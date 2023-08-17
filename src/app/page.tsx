@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { signIn, signOut } from "next-auth/react";
 
-import ListUsers from "./components/trpctest";
+import ListUsers from "@/core/components/trpctest";
 
 export default function Home() {
     const { data: session } = useSession();
