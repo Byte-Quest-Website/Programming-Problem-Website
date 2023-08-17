@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 
 import "./globals.css";
+import Navbar from "@/core/components/navbar";
+import Footer from "@/core/components/footer";
 import Provider from "@/core/helpers/provider";
 import { TrpcProvider } from "@/core/utils/trpc-provider";
 import { authOptions } from "./api/auth/[...nextauth]/route";
@@ -22,7 +24,11 @@ export default async function RootLayout({
         <html lang="en">
             <body>
                 <Provider session={session}>
-                    <TrpcProvider>{children}</TrpcProvider>
+                    <TrpcProvider>
+                        <Navbar />
+                        {children}
+                        <Footer />
+                    </TrpcProvider>
                 </Provider>
             </body>
         </html>

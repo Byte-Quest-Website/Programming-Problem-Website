@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { User } from "../api/trpc/trpc-router";
-import { trpc } from "@/core/utils/trpc";
 import React from "react";
+import { User } from "@/app/api/trpc/trpc-router";
+import { trpc } from "@/core/utils/trpc";
 import { useSession } from "next-auth/react";
 
 export default function ListUsers() {
@@ -16,9 +16,9 @@ export default function ListUsers() {
     }
 
     if (!session) {
-         return <div>unauthorized</div>
+        return <div>unauthorized</div>;
     }
-    
+
     return (
         <div
             style={{
