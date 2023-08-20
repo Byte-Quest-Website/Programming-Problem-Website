@@ -1,10 +1,11 @@
 import NextAuth from "next-auth";
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord";
 import GithubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import "dotenv/config";
 
 const prisma = new PrismaClient();
@@ -23,8 +24,16 @@ export const authOptions: NextAuthOptions = {
         DiscordProvider({
             clientId: process.env.DISCORD_ID,
             clientSecret: process.env.DISCORD_SECRET,
-        })
+        }),
     ],
+    callbacks: {
+        session: async ({ session, token, user }) => {
+            if (session?.user) {
+                session.user.id = user.id;
+            }
+            return session;
+        },
+    },
     secret: process.env.NEXTAUTH_SECRET,
 };
 
