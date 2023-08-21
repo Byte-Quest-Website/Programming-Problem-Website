@@ -1,14 +1,12 @@
-import NextAuth from "next-auth";
-import type { NextAuthOptions, Session } from "next-auth";
-import { JWT } from "next-auth/jwt";
-import GoogleProvider from "next-auth/providers/google";
-import DiscordProvider from "next-auth/providers/discord";
-import GithubProvider from "next-auth/providers/github";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient, User } from "@prisma/client";
 import "dotenv/config";
+import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
+import DiscordProvider from "next-auth/providers/discord";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
-const prisma = new PrismaClient();
+import { prisma } from "@/core/prisma/connections";
 
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(prisma),
