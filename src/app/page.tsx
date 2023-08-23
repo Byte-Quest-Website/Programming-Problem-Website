@@ -4,31 +4,31 @@ import { signIn } from "next-auth/react";
 
 export default function Home() {
     return (
-        <main className="flex items-center justify-center mt-16">
-            <div>
-                <h1 className="text-[#EDF2F4] font-poppinsbold text-[4rem] leading-[5rem]">
+        <main className="flex-col md:flex-row flex items-center justify-center h-full mt-16 md:mt-32">
+            <div className="flex flex-col md:inline justify-center items-center">
+                <h1 className="text-[#EDF2F4] text-[2.15rem] sm:text-[3rem] font-poppinsbold md:mb-6 xl:leading-[5rem] text-center md:text-left md:text-[2rem] lg:text-[3rem] xl:text-[3.5rem] 2xl:text-[4rem]">
                     Achieve Mastery
                     <br />
                     Through a Challenge
                 </h1>
-                <p className="text-[#EDF2F4] text-[1.25rem] my-6">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
+                <p className="text-[#EDF2F4] text-center sm:text-[1.15rem] md:text-left md:text-[0.75rem] lg:text-[1.1rem] 2xl:text-[1.25rem] my-6 ">
+                    Welcome to our ByteQuest - the spiciest coding platform{" "}
                     <br />
-                    Sed accumsan efficitur magna a ullamcorper. Fusce rhoncus
+                    Lets enhance your skills through exciting challenges and
+                    conquer the world of coding
                 </p>
                 <button
                     onClick={() => signIn()}
-                    className="bg-four text-white px-12 py-3 rounded-xl text-md"
+                    className="bg-four text-sm px-6 py-3 text-white sm:mb-5 sm:text-lg sm:px-10 sm:py-3 text-center md:text-left md:text-sm md:px-4 md:py-2 lg:px-9 lg:py-3 2xl:px-12 lg:mt-6 rounded-xl lg:text-md"
                 >
                     Sign Up Today!
                 </button>
             </div>
             <div>
                 <svg
+                    className="mt-10 w-full sm:w-[30rem] md:w-[20rem] lg:w-[25rem] xl:w-[35rem] 2xl:w-[45rem] h-auto"
                     xmlns="http://www.w3.org/2000/svg"
                     data-name="Layer 1"
-                    width="600.63037"
-                    height="483"
                     viewBox="0 0 878.63037 483"
                     xmlnsXlink="http://www.w3.org/1999/xlink"
                 >
