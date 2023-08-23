@@ -3,6 +3,7 @@
 import "./navicon.css";
 
 import React from "react";
+import { GlitchText } from "glitch-text";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { signIn, signOut } from "next-auth/react";
@@ -13,22 +14,25 @@ const Navbar = () => {
     const { data: session } = useSession();
 
     const [showMobileNav, setShowMobileNav] = useState(
-        window.innerWidth <= 885
+        globalThis.window.innerWidth <= 885
     );
     const [showNavLogoText, setShowNavLogoText] = useState(
-        window.innerWidth >= 390
+        globalThis.window.innerWidth >= 390
     );
     const [navbarOpen, setNavbarOpen] = useState(false);
 
     useEffect(() => {
         const windowWidthListener = (event: Event) => {
             setNavbarOpen(false);
-            setShowMobileNav(window.innerWidth <= 885);
-            setShowNavLogoText(window.innerWidth >= 390);
+            setShowMobileNav(globalThis.window.innerWidth <= 885);
+            setShowNavLogoText(globalThis.window.innerWidth >= 390);
         };
-        window.addEventListener("resize", windowWidthListener);
+        globalThis.window.addEventListener("resize", windowWidthListener);
         return () => {
-            window.removeEventListener("resize", windowWidthListener);
+            globalThis.window.removeEventListener(
+                "resize",
+                windowWidthListener
+            );
         };
     });
 
@@ -66,7 +70,10 @@ const Navbar = () => {
                     onClick={() => router.push("/")}
                     className="font-hacked text-white text-[3rem] md:text-[2.5rem] lg:text-[3rem] hover:cursor-pointer"
                 >
-                    {showNavLogoText ? "ByteQuest" : "B"}
+                    <GlitchText
+                        theme="red"
+                        text={showNavLogoText ? "ByteQuest" : "B"}
+                    />
                 </h1>
                 {!showMobileNav ? (
                     <>
@@ -76,7 +83,7 @@ const Navbar = () => {
                                     <li
                                         key={index}
                                         onClick={() => router.push(item.link)}
-                                        className="hover:text-[#0080DC] duration-100 hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-0.5 before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-black dark:before:bg-white before:absolute before:left-0 before:bottom-0 md:text-md lg:text-xl inline mx-5 font-poppins text-white hover:cursor-pointer"
+                                        className="hover:text-six duration-300 hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-0.5 before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-black dark:before:bg-white before:absolute before:left-0 before:bottom-0 md:text-md lg:text-xl inline mx-5 font-poppins text-white hover:cursor-pointer"
                                     >
                                         {item.text}
                                     </li>
@@ -85,10 +92,13 @@ const Navbar = () => {
                         </ul>
                         <button
                             onClick={() => (session ? signOut() : signIn())}
-                            className="bg-four text-white md:px-8 lg:px-12 py-3 rounded-xl md:text-md lg:text-xl"
+                            className="bg-four text-white md:px-8 lg:px-12 py-3 rounded-xl md:text-md lg:text-xl group relative overflow-hidden"
                         >
-                            {session ? "Sign Out" : "Log In"}
-                        </button>{" "}
+                            <div className="absolute inset-0 w-0 bg-six transition-all duration-500 ease-in-out group-hover:w-full"></div>
+                            <span className="relative text-white">
+                                {session ? "Sign Out" : "Log In"}
+                            </span>
+                        </button>
                     </>
                 ) : (
                     <>
@@ -146,7 +156,7 @@ const Navbar = () => {
                                             onClick={() =>
                                                 router.push(item.link)
                                             }
-                                            className="hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-0.5 before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-black dark:before:bg-white before:absolute before:left-0 before:bottom-0 md:text-md lg:text-xl inline md:text-[2rem] my-3 font-poppins text-white hover:cursor-pointer"
+                                            className="text-center inline text-[2rem] my-3 font-poppins text-white hover:cursor-pointer   hover:text-six duration-300 hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-0.5 before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-black dark:before:bg-white before:absolute before:left-0 before:bottom-0"
                                         >
                                             {item.text}
                                         </li>
@@ -156,10 +166,13 @@ const Navbar = () => {
                                     onClick={() =>
                                         session ? signOut() : signIn()
                                     }
-                                    className="bg-four text-white md:px-12 md:py-4 my-3 rounded-xl md:text-md md:text-2xl"
+                                    className="bg-four text-white md:px-8 lg:px-12 md:text-md lg:text-xl group relative overflow-hidden px-12 py-4 my-3 rounded-xl text-xl"
                                 >
-                                    {session ? "Sign Out" : "Log In"}
-                                </button>{" "}
+                                    <div className="absolute inset-0 w-0 bg-six transition-all duration-500 ease-in-out group-hover:w-full"></div>
+                                    <span className="relative text-white">
+                                        {session ? "Logout" : "Login"}
+                                    </span>
+                                </button>
                             </ul>
                         </div>
                     </>
