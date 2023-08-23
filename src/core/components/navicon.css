@@ -1,6 +1,5 @@
 #nav-icon {
     width: 50px;
-    position: fixed;
     transform: rotate(0deg);
     transition: 0.5s ease-in-out;
     cursor: pointer;
