@@ -13,12 +13,13 @@ const Navbar = () => {
     const router = useRouter();
     const { data: session } = useSession();
 
-    const [showMobileNav, setShowMobileNav] = useState(
-        globalThis.window.innerWidth <= 885
-    );
-    const [showNavLogoText, setShowNavLogoText] = useState(
-        globalThis.window.innerWidth >= 390
-    );
+    const [showMobileNav, setShowMobileNav] = useState(false);
+    const [showNavLogoText, setShowNavLogoText] = useState(false);
+
+    useEffect(() => {
+        globalThis.window.innerWidth <= 885;
+        setShowNavLogoText(globalThis.window.innerWidth >= 390);
+    }, []);
     const [navbarOpen, setNavbarOpen] = useState(false);
 
     useEffect(() => {
@@ -34,7 +35,7 @@ const Navbar = () => {
                 windowWidthListener
             );
         };
-    });
+    }, []);
 
     useEffect(() => {
         const keyHandler = (event: KeyboardEvent) => {
