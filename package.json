@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build",
-    "prisma:generate": "prisma generate",
-    "postinstall": "prisma generate"
+    "vercel-build": "npx prisma generate && next build",
+    "prisma:generate": "npx prisma generate",
+    "postinstall": "npx prisma generate"
   },
   "prisma": {
     "schema": "./src/core/prisma/schema.prisma"
