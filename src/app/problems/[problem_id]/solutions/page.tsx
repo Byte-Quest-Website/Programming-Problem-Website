@@ -1,5 +1,5 @@
 import React from "react";
-import { prisma } from "@/core/prisma/connections";
+import prisma from "@/core/db/orm";
 
 const AllSolutions = async () => {
     const solutions = await prisma.problem.findMany();

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import React from "react";
 
-import { prisma } from "@/core/prisma/connections";
+import prisma from "@/core/db/orm";
 
 const page = async ({ params }: { params: { solution_id: string } }) => {
     const isUUID = z.string().uuid().safeParse(params.solution_id).success;

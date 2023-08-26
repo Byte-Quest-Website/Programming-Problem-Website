@@ -2,7 +2,7 @@ import { z } from "zod";
 import { getServerSession } from "next-auth";
 import { NextResponse, NextRequest } from "next/server";
 
-import { prisma } from "@/core/prisma/connections";
+import prisma from "@/core/db/orm";
 import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET(request: NextRequest) {

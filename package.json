@@ -12,7 +12,7 @@
     "postinstall": "npx prisma generate"
   },
   "prisma": {
-    "schema": "./src/core/prisma/schema.prisma"
+    "schema": "./src/core/db/schema.prisma"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { prisma } from "@/core/prisma/connections";
+import prisma from "@/core/db/orm";
 import ProblemItem from "@/core/components/problemItem";
 
 const Problems = async () => {

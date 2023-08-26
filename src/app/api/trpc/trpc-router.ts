@@ -1,6 +1,6 @@
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
-import { prisma, redis } from "@/core/prisma/connections";
+import prisma from "@/core/db/orm";
 
 const t = initTRPC.create({
     transformer: superjson,

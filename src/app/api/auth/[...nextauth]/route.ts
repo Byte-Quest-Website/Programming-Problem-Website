@@ -6,7 +6,7 @@ import GithubProvider from "next-auth/providers/github";
 import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
-import { prisma } from "@/core/prisma/connections";
+import prisma from "@/core/db/orm";
 
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(prisma),

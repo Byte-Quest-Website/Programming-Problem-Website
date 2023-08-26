@@ -1,7 +1,7 @@
 import { z } from "zod";
 import React from "react";
 
-import { prisma } from "@/core/prisma/connections";
+import prisma from "@/core/db/orm";
 import ProblemItem from "@/core/components/problemItem";
 
 const page = async ({ params }: { params: { problem_id: string } }) => {
