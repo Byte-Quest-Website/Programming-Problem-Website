@@ -20,21 +20,31 @@ model Job {
 }
 
 model Problem {
-  id             String   @id @default(uuid())
+  id             String     @id @default(uuid())
   title          String
   description    String
-  verified       Boolean  @default(false)
+  verified       Boolean    @default(false)
   tests          Json?
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt
-  timeLimit      Int      @map("time_limit")
-  functionName   String   @map("function_name")
-  memoryLimit    Int      @map("memory_limit ")
-  parameterNames String[] @map("parameter_names")
-  user           User     @relation(fields: [userId], references: [id])
+  solutionLink   String?    @map("solution_link")
+  likes          Int        @default(0)
+  dislikes       Int        @default(0)
+  difficulty     Difficulty
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+  timeLimit      Int        @map("time_limit")
+  functionName   String     @map("function_name")
+  memoryLimit    Int        @default(15) @map("memory_limit")
+  parameterNames String[]   @map("parameter_names")
+  user           User       @relation(fields: [userId], references: [id])
   userId         String
 
   @@map("problems")
+}
+
+enum Difficulty {
+  EASY
+  MEDUIUM
+  HARD
 }
 
 model Solution {
@@ -57,8 +67,8 @@ model User {
   email         String?    @unique
   emailVerified DateTime?  @map("email_verified")
   image         String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
   accounts      Account[]
   sessions      Session[]
   Problem       Problem[]
@@ -109,4 +119,5 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+  @@map("verification_requests")
 }
