@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "prisma:generate": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "schema": "./src/core/prisma/schema.prisma"
@@ -33,6 +36,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-query": "^3.39.3",
+    "react-spinners": "^0.13.8",
     "redis": "^4.6.7",
     "superjson": "^1.13.1",
     "tailwindcss": "3.3.3",
