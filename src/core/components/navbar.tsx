@@ -1,6 +1,6 @@
 "use client";
 
-import "./navicon.css";
+import "@/assets/other/navicon.css";
 
 import React from "react";
 import { GlitchText } from "glitch-text";
@@ -13,22 +13,26 @@ const Navbar = () => {
     const router = useRouter();
     const { data: session } = useSession();
 
+    const [navbarOpen, setNavbarOpen] = useState(false);
     const [showMobileNav, setShowMobileNav] = useState(false);
     const [showNavLogoText, setShowNavLogoText] = useState(false);
 
+    // Run on page load to check weather to load mobile nav or not
     useEffect(() => {
-        globalThis.window.innerWidth <= 885;
+        setShowMobileNav(globalThis.window.innerWidth <= 885);
         setShowNavLogoText(globalThis.window.innerWidth >= 390);
     }, []);
-    const [navbarOpen, setNavbarOpen] = useState(false);
 
+    // Add event handler for when the window is resized
     useEffect(() => {
         const windowWidthListener = (event: Event) => {
             setNavbarOpen(false);
             setShowMobileNav(globalThis.window.innerWidth <= 885);
             setShowNavLogoText(globalThis.window.innerWidth >= 390);
         };
+
         globalThis.window.addEventListener("resize", windowWidthListener);
+
         return () => {
             globalThis.window.removeEventListener(
                 "resize",
@@ -37,6 +41,7 @@ const Navbar = () => {
         };
     }, []);
 
+    // Add event listner to listen for when ESC key is pressed and close nav bar if open
     useEffect(() => {
         const keyHandler = (event: KeyboardEvent) => {
             if (event.key === "Escape") {
@@ -46,7 +51,9 @@ const Navbar = () => {
                 }
             }
         };
+
         document.addEventListener("keydown", keyHandler);
+
         return () => {
             document.removeEventListener("keydown", keyHandler);
         };
