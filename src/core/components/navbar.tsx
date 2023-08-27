@@ -91,7 +91,7 @@ const Navbar = () => {
                                     <li
                                         key={index}
                                         onClick={() => router.push(item.link)}
-                                        className="hover:text-six duration-300 hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-0.5 before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-black dark:before:bg-white before:absolute before:left-0 before:bottom-0 md:text-md lg:text-xl inline mx-5 font-poppins text-white hover:cursor-pointer"
+                                        className="hover:text-six duration-300 hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-0.5 before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-white before:absolute before:left-0 before:bottom-0 md:text-md lg:text-xl inline mx-5 font-poppins text-white hover:cursor-pointer"
                                     >
                                         {item.text}
                                     </li>
@@ -150,7 +150,7 @@ const Navbar = () => {
                         )}
 
                         <div
-                            className={`fixed right-0 top-0 z-40 h-full w-full bg-one p-5 text-white duration-500 ease-in-out dark:bg-pgrey ${
+                            className={`fixed right-0 top-0 z-40 h-full w-full p-5 text-white duration-500 ease-in-out bg-pgrey ${
                                 navbarOpen
                                     ? "translate-x-0 "
                                     : "translate-x-full"
@@ -165,7 +165,7 @@ const Navbar = () => {
                                                 router.push(item.link);
                                                 setNavbarOpen(false);
                                             }}
-                                            className="text-center inline text-[2rem] my-3 font-poppins text-white hover:cursor-pointer   hover:text-six duration-300 hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-0.5 before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-black dark:before:bg-white before:absolute before:left-0 before:bottom-0"
+                                            className="text-center inline text-[2rem] my-3 font-poppins text-white hover:cursor-pointer   hover:text-six duration-300 hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-0.5 before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-white before:absolute before:left-0 before:bottom-0"
                                         >
                                             {item.text}
                                         </li>
