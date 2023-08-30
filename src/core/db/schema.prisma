@@ -37,6 +37,7 @@ model Problem {
   parameterNames String[]   @map("parameter_names")
   user           User       @relation(fields: [userId], references: [id])
   userId         String
+  Solution       Solution[]
 
   @@map("problems")
 }
@@ -57,6 +58,8 @@ model Solution {
   userId     String
   job        Job      @relation(fields: [jobId], references: [id])
   jobId      String
+  problem    Problem  @relation(fields: [problemId], references: [id])
+  problemId  String
 
   @@map("solutions")
 }
