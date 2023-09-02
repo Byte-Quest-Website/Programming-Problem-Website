@@ -8,7 +8,12 @@ const ProblemItem = ({ problem }: { problem: Problem }) => {
     const router = useRouter();
 
     return (
-        <div onClick={() => router.push(`http://localhost:3000/problems/${problem.id}`)}>
+        <div
+            className="text-white"
+            onClick={() =>
+                router.push(`http://localhost:3000/problems/${problem.id}`)
+            }
+        >
             <li>{problem.id}</li>
             <li>{problem.title}</li>
             <li>{problem.description}</li>

@@ -5,7 +5,6 @@ import prisma from "@/core/db/orm";
 
 const page = async ({ params }: { params: { solution_id: string } }) => {
     const isUUID = z.string().uuid().safeParse(params.solution_id).success;
-    console.log(isUUID);
     if (!isUUID) {
         return <div>Not valid</div>;
     }
