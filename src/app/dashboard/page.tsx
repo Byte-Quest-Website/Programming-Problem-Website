@@ -28,10 +28,14 @@ const Page = async () => {
             userId: user.id,
         },
     });
-    const solvedProblems = await Promise.all(
-        solvedProblemsSolutions.map((p) =>
-            prisma.problem.findUnique({ where: { id: p.id } })
-        )
+    let solvedProblems: Problem[] = [];
+    await Promise.all(
+        solvedProblemsSolutions.map(async (problem) => {
+            const p = await prisma.problem.findUnique({
+                where: { id: problem.id },
+            });
+            if (p) solvedProblems.push(p);
+        })
     );
 
     if (!userProblems || !solvedProblems || !solvedProblemsSolutions)

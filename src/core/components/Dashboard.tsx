@@ -7,7 +7,7 @@ import { User, Solution, Problem } from "@prisma/client";
 const Dashboard = (props: {
     user: User;
     solutions: Solution[];
-    solvedProblems: (Problem | null)[];
+    solvedProblems: Problem[];
     problems: Problem[];
     likedProblems: Problem[];
     dislikedProblems: Problem[];
@@ -97,7 +97,16 @@ const Dashboard = (props: {
 
                                         <div className="w-full bg-two h-3 rounded-xl">
                                             <div
-                                                className={`w-[${easyPercentage}%] rounded-xl bg-[#A5D76E] h-3`}
+                                                style={{
+                                                    width: `${
+                                                        isNaN(easyPercentage)
+                                                            ? "100%"
+                                                            : easyPercentage
+                                                    }%`,
+                                                }}
+                                                className={
+                                                    "rounded-xl bg-[#A5D76E] h-3"
+                                                }
                                             ></div>
                                         </div>
                                     </div>
@@ -114,6 +123,13 @@ const Dashboard = (props: {
 
                                         <div className="w-full bg-two h-3 rounded-xl">
                                             <div
+                                                style={{
+                                                    width: `${
+                                                        isNaN(mediumPercentage)
+                                                            ? "100%"
+                                                            : mediumPercentage
+                                                    }%`,
+                                                }}
                                                 className={`w-[${mediumPercentage.toString()}%] rounded-xl bg-[#F6C36F] h-3`}
                                             ></div>
                                         </div>
@@ -131,17 +147,30 @@ const Dashboard = (props: {
 
                                         <div className="w-full bg-two h-3 rounded-xl">
                                             <div
-                                                className={`w-[${hardPercentage.toString()}%] rounded-xl bg-[#D15559] h-3`}
+                                                style={{
+                                                    width: `${
+                                                        isNaN(hardPercentage)
+                                                            ? "100%"
+                                                            : hardPercentage
+                                                    }%`,
+                                                }}
+                                                className={
+                                                    "rounded-xl bg-[#D15559] h-3"
+                                                }
                                             ></div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="flex items-center justify-center">
-                                    <PieChart
-                                        className="w-44"
-                                        data={pieChartData}
-                                    />
+                                    {props.solvedProblems.length ? (
+                                        <PieChart
+                                            className="w-44"
+                                            data={pieChartData}
+                                        />
+                                    ) : (
+                                        <p className="text-white">Solve some problems for graph</p>
+                                    )}
                                 </div>
                             </div>
                         </div>
