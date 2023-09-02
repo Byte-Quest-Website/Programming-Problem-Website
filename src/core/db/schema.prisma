@@ -68,8 +68,8 @@ model User {
   id               String     @id @default(uuid())
   name             String
   score            Int        @default(0)
-  likedProblems    String[]
-  dislikedProblems String[]
+  likedProblems    String[]   @default([])
+  dislikedProblems String[]   @default([])
   email            String?    @unique
   emailVerified    DateTime?  @map("email_verified")
   image            String?

@@ -1,25 +1,23 @@
 "use client";
 
-import { User, Solution, Problem } from "@prisma/client";
+import { useState } from "react";
 import { PieChart } from "react-minimal-pie-chart";
+import { User, Solution, Problem } from "@prisma/client";
 
 const Dashboard = (props: {
     user: User;
     solutions: Solution[];
     solvedProblems: (Problem | null)[];
     problems: Problem[];
+    likedProblems: Problem[];
+    dislikedProblems: Problem[];
     problemCount: { EASY: number; MEDIUM: number; HARD: number };
     totalEasy: number;
     totalMedium: number;
     totalHard: number;
+    rank: number;
 }) => {
-    // test data
-    props.totalEasy = 100;
-    props.totalMedium = 100;
-    props.totalHard = 100;
-    props.problemCount.EASY += 42;
-    props.problemCount.MEDIUM += 23;
-    props.problemCount.HARD += 13;
+    const [showLiked, setShowLiked] = useState(true);
 
     const easyPercentage = props.problemCount.EASY / (props.totalEasy / 100);
     const mediumPercentage =
@@ -27,13 +25,21 @@ const Dashboard = (props: {
     const hardPercentage = props.problemCount.HARD / (props.totalHard / 100);
 
     const pieChartData = [
-        { title: "Easy", value: props.problemCount.EASY, color: "#A5D76E" },
+        {
+            title: "Easy",
+            value: props.problemCount.EASY,
+            color: "#A5D76E",
+        },
         {
             title: "Medium",
             value: props.problemCount.MEDIUM,
             color: "#F6C36F",
         },
-        { title: "Hard", value: props.problemCount.HARD, color: "#D15559" },
+        {
+            title: "Hard",
+            value: props.problemCount.HARD,
+            color: "#D15559",
+        },
     ];
 
     return (
@@ -63,92 +69,150 @@ const Dashboard = (props: {
                                     {props.user.createdAt.toLocaleDateString()}
                                 </p>
                                 <p className="font-poppins text-white">
-                                    Rank: #{4}
+                                    Rank: #{props.rank}
                                 </p>
                             </div>
                         </div>
                     </div>
                     <div className="bg-one m-2 mb-1 ml-1 rounded-xl shadow-xl">
-                        <div
-                            style={{ gridTemplateColumns: "65% 35%" }}
-                            className="grid grid-cols-2 w-full gap-5 p-6"
-                        >
-                            <div>
-                                <h1 className="font-poppinsbold text-white text-xl">
-                                    Solved Problems
-                                </h1>
-                                <div className="my-2 w-full">
-                                    <h2 className="flex justify-between">
-                                        <h2 className="text-white font-poppinsbold">
-                                            Easy
-                                        </h2>
-                                        <h2 className="text-white">
-                                            {props.problemCount.EASY}/
-                                            {props.totalEasy}
-                                        </h2>
-                                    </h2>
+                        <div className="flex items-center">
+                            <div
+                                style={{ gridTemplateColumns: "65% 35%" }}
+                                className="grid grid-cols-2 w-full gap-5 p-6 items-center"
+                            >
+                                <div>
+                                    <h1 className="font-poppinsbold text-white text-xl">
+                                        Solved Problems
+                                    </h1>
+                                    <div className="my-2 w-full">
+                                        <div className="flex justify-between">
+                                            <h2 className="text-white font-poppinsbold">
+                                                Easy
+                                            </h2>
+                                            <h2 className="text-white">
+                                                {props.problemCount.EASY}/
+                                                {props.totalEasy}
+                                            </h2>
+                                        </div>
 
-                                    <div className="w-full bg-two h-3 rounded-xl">
-                                        <div
-                                            className={`w-[${easyPercentage}%] rounded-xl bg-[#A5D76E] h-3`}
-                                        ></div>
+                                        <div className="w-full bg-two h-3 rounded-xl">
+                                            <div
+                                                className={`w-[${easyPercentage}%] rounded-xl bg-[#A5D76E] h-3`}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div className="my-2">
+                                        <div className="flex justify-between">
+                                            <h2 className="text-white font-poppinsbold">
+                                                Medium
+                                            </h2>
+                                            <h2 className="text-white">
+                                                {props.problemCount.MEDIUM}/
+                                                {props.totalMedium}
+                                            </h2>
+                                        </div>
+
+                                        <div className="w-full bg-two h-3 rounded-xl">
+                                            <div
+                                                className={`w-[${mediumPercentage.toString()}%] rounded-xl bg-[#F6C36F] h-3`}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div className="my-2">
+                                        <div className="flex justify-between">
+                                            <h2 className="text-white font-poppinsbold">
+                                                Hard
+                                            </h2>
+                                            <h2 className="text-white">
+                                                {props.problemCount.HARD}/
+                                                {props.totalHard}
+                                            </h2>
+                                        </div>
+
+                                        <div className="w-full bg-two h-3 rounded-xl">
+                                            <div
+                                                className={`w-[${hardPercentage.toString()}%] rounded-xl bg-[#D15559] h-3`}
+                                            ></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="my-2">
-                                    <h2 className="flex justify-between">
-                                        <h2 className="text-white font-poppinsbold">
-                                            Medium
-                                        </h2>
-                                        <h2 className="text-white">
-                                            {props.problemCount.MEDIUM}/
-                                            {props.totalMedium}
-                                        </h2>
-                                    </h2>
 
-                                    <div className="w-full bg-two h-3 rounded-xl">
-                                        <div
-                                            className={`w-[${mediumPercentage}%] rounded-xl bg-[#F6C36F] h-3`}
-                                        ></div>
-                                    </div>
+                                <div className="flex items-center justify-center">
+                                    <PieChart
+                                        className="w-44"
+                                        data={pieChartData}
+                                    />
                                 </div>
-                                <div className="my-2">
-                                    <h2 className="flex justify-between">
-                                        <h2 className="text-white font-poppinsbold">
-                                            Hard
-                                        </h2>
-                                        <h2 className="text-white">
-                                            {props.problemCount.HARD}/
-                                            {props.totalHard}
-                                        </h2>
-                                    </h2>
-
-                                    <div className="w-full bg-two h-3 rounded-xl">
-                                        <div
-                                            className={`w-[${hardPercentage}%] rounded-xl bg-[#D15559] h-3`}
-                                        ></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center justify-center">
-                                <PieChart
-                                    className="w-44"
-                                    data={pieChartData}
-                                />
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div
-                    style={{ gridTemplateColumns: "70% 30%" }}
-                    className="grid grid-cols-2 w-full "
+                    style={{ gridTemplateColumns: "60% 40%" }}
+                    className="grid grid-cols-2 w-full max-h-[35rem]"
                 >
-                    <div className="bg-one m-2 mt-1 mr-1 rounded-xl shadow-xl">
-                        e
+                    <div className="bg-one m-2 mt-1 mr-1 rounded-xl shadow-xl overflow-y-scroll no-scrollbar">
+                        <div className="text-center justify-center sticky top-0 bg-one rounded-2xl">
+                            <h1 className="text-white p-5 font-poppinsbold text-2xl">
+                                My Problems
+                            </h1>
+                        </div>
+                        <div className="px-5">
+                            {props.problems.map((problem) => {
+                                return (
+                                    <div
+                                        key={problem.id}
+                                        className="my-3 w-full bg-two h-16 rounded-xl shadow-2xl"
+                                    >
+                                        {problem.title} {problem.id}
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
-                    <div className="bg-one m-2 mt-1 ml-1 rounded-xl shadow-xl">
-                        e
+                    <div className="bg-one m-2 mt-1 ml-1 rounded-xl shadow-xl overflow-y-scroll no-scrollbar">
+                        <div className="flex items-center justify-center sticky top-0 bg-one rounded-2xl">
+                            <button
+                                className={`text-white p-5 font-poppinsbold text-2xl${
+                                    !showLiked ? " text-opacity-25" : ""
+                                }`}
+                                onClick={() => setShowLiked(true)}
+                            >
+                                Liked Problems
+                            </button>
+                            <button
+                                className={`text-white p-5 font-poppinsbold text-2xl${
+                                    showLiked ? " text-opacity-25" : ""
+                                }`}
+                                onClick={() => setShowLiked(false)}
+                            >
+                                Disliked Problems
+                            </button>
+                        </div>
+                        <div className="px-5">
+                            {showLiked
+                                ? props.likedProblems.map((problem) => {
+                                      return (
+                                          <div
+                                              key={problem.id}
+                                              className="my-3 w-full bg-two h-16 rounded-xl shadow-2xl"
+                                          >
+                                              {problem.title}
+                                          </div>
+                                      );
+                                  })
+                                : props.dislikedProblems.map((problem) => {
+                                      return (
+                                          <div
+                                              key={problem.id}
+                                              className="my-3 w-full bg-two h-16 rounded-xl shadow-2xl"
+                                          >
+                                              {problem.title}
+                                          </div>
+                                      );
+                                  })}
+                        </div>
                     </div>
                 </div>
             </div>

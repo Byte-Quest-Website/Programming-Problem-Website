@@ -1,6 +1,7 @@
 import React from "react";
 import { getServerSession } from "next-auth/next";
 import prisma from "@/core/db/orm";
+import { Problem } from "@prisma/client";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Dashboard from "@/core/components/Dashboard";
 
@@ -13,7 +14,7 @@ const Page = async () => {
     });
 
     if (!user) {
-        return <></>;
+        return <>Not Logged In</>;
     }
 
     const userProblems = await prisma.problem.findMany({
@@ -34,7 +35,7 @@ const Page = async () => {
     );
 
     if (!userProblems || !solvedProblems || !solvedProblemsSolutions)
-        return <>End</>;
+        return <>Not Logged In</>;
 
     const totalEasy = await prisma.problem.count({
         where: { difficulty: "EASY" },
@@ -51,6 +52,32 @@ const Page = async () => {
         if (p) problemCount[p.difficulty] = p.difficulty + 1;
     });
 
+    const allUsers = await prisma.user.findMany({
+        select: { id: true, score: true },
+        orderBy: { score: "desc" },
+    });
+    const rank = allUsers.findIndex((item) => item.id == user.id);
+
+    let likedProblems: Problem[] = [];
+    await Promise.all(
+        user.likedProblems.map(async (id) => {
+            const p = await prisma.problem.findUnique({ where: { id: id } });
+            if (p) {
+                likedProblems.push(p);
+            }
+        })
+    );
+
+    let dislikedProblems: Problem[] = [];
+    await Promise.all(
+        user.dislikedProblems.map(async (id) => {
+            const p = await prisma.problem.findUnique({ where: { id: id } });
+            if (p) {
+                dislikedProblems.push(p);
+            }
+        })
+    );
+
     return (
         <Dashboard
             user={user}
@@ -61,6 +88,9 @@ const Page = async () => {
             totalEasy={totalEasy}
             totalMedium={totalMedium}
             totalHard={totalHard}
+            likedProblems={likedProblems}
+            dislikedProblems={dislikedProblems}
+            rank={rank + 1}
         />
     );
 };
