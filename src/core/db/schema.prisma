@@ -65,17 +65,20 @@ model Solution {
 }
 
 model User {
-  id            String     @id @default(uuid())
-  name          String
-  email         String?    @unique
-  emailVerified DateTime?  @map("email_verified")
-  image         String?
-  createdAt     DateTime   @default(now()) @map("created_at")
-  updatedAt     DateTime   @updatedAt @map("updated_at")
-  accounts      Account[]
-  sessions      Session[]
-  Problem       Problem[]
-  Solution      Solution[]
+  id               String     @id @default(uuid())
+  name             String
+  score            Int        @default(0)
+  likedProblems    String[]
+  dislikedProblems String[]
+  email            String?    @unique
+  emailVerified    DateTime?  @map("email_verified")
+  image            String?
+  createdAt        DateTime   @default(now()) @map("created_at")
+  updatedAt        DateTime   @updatedAt @map("updated_at")
+  accounts         Account[]
+  sessions         Session[]
+  Problem          Problem[]
+  Solution         Solution[]
 
   @@map("users")
 }
