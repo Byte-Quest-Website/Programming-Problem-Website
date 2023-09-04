@@ -38,3 +38,13 @@
     font-family: "Hacked";
     src: url("../assets/fonts/hacked.ttf");
 }
+
+.cm-line {
+    font-family: "JetBrainsMono";
+    font-size: 16px;
+    tab-size: 4;
+}
+
+.markdown > * {
+    all: revert;
+}
