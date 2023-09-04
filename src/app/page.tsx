@@ -19,7 +19,7 @@ export default function Home() {
                 </p>
                 <button
                     onClick={() => signIn()}
-                    className="bg-four text-sm px-6 py-3 text-white sm:mb-5 sm:text-lg sm:px-10 sm:py-3 text-center md:text-left md:text-sm md:px-4 md:py-2 lg:px-9 lg:py-3 2xl:px-12 lg:mt-6 rounded-xl lg:text-md"
+                    className="bg-five transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-four duration-300 text-sm px-6 py-3 text-white sm:mb-5 sm:text-lg sm:px-10 sm:py-3 text-center md:text-left md:text-sm md:px-4 md:py-2 lg:px-9 lg:py-3 2xl:px-12 lg:mt-6 rounded-xl lg:text-md"
                 >
                     Sign Up Today!
                 </button>
