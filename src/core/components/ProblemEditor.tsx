@@ -25,6 +25,18 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
     const [completion, setCompletion] = useState(true);
     const [syntaxHighlighting, setSyntaxHighlighting] = useState(true);
 
+    const editorDivRef = useRef<HTMLDivElement>(null);
+
+    const difficultyColors = {
+        EASY: "#A5D76E",
+        MEDIUM: "#F6C36F",
+        HARD: "#D15559",
+    };
+
+    const defaultBoilerplateCode = `def ${
+        props.problem.functionName
+    }(${props.problem.parameterNames.join(", ")}):\n  pass`;
+
     useEffect(() => {
         // if full screen is selected resize breif div to take 0 width
         if (fullScreen) {
@@ -33,7 +45,6 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
         setSizes((sizes) => [250, sizes[1], sizes[2]]);
     }, [fullScreen]);
 
-    const editorDivRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         editorDivRef.current?.scrollIntoView({ behavior: "smooth" });
     }, []);
@@ -160,16 +171,6 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
             }, 1000);
         }
     }, []);
-
-    const difficultyColors = {
-        EASY: "#A5D76E",
-        MEDIUM: "#F6C36F",
-        HARD: "#D15559",
-    };
-
-    const defaultBoilerplateCode = `def ${
-        props.problem.functionName
-    }(${props.problem.parameterNames.join(", ")}):\n  pass`;
 
     useEffect(() => {
         const noAutoSave =
