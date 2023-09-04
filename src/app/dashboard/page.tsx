@@ -47,7 +47,7 @@ const Page = async () => {
         where: { difficulty: "EASY" },
     });
     const totalMedium = await prisma.problem.count({
-        where: { difficulty: "MEDUIUM" },
+        where: { difficulty: "MEDIUM" },
     });
     const totalHard = await prisma.problem.count({
         where: { difficulty: "HARD" },
@@ -56,7 +56,7 @@ const Page = async () => {
     const problemCount = { EASY: 0, MEDIUM: 0, HARD: 0 };
     solvedProblems.map((p) => {
         if (p) {
-            problemCount[p.difficulty] = p.difficulty + 1;
+            problemCount[p.difficulty] += 1;
         }
     });
 
