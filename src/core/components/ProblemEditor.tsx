@@ -56,8 +56,7 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
         // if light mode is selected remove auto complete and syntax highlighting
         if (themeName?.toLowerCase().includes("light")) {
             alert(
-                "You sir have commited a war crime by using light mode\n\
-                There goes your syntax highlighting and autocomplete"
+                "You sir have commited a war crime by using light mode\nThere goes your syntax highlighting and autocomplete"
             );
             setCompletion(false);
             setSyntaxHighlighting(false);
@@ -80,8 +79,7 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
         // if global variable or wildcard import is written remove auto complete and syntax highlighting
         if (code.includes("global")) {
             alert(
-                "Bro just typed 'global'\n\
-                No more autocomplete and syntaxhighlighting for you"
+                "Bro just typed 'global'\nNo more autocomplete and syntaxhighlighting for you"
             );
             setCompletion(false);
             setSyntaxHighlighting(false);
@@ -91,8 +89,7 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
             ) /* special case for mr sheppard's tkinter code */
         ) {
             alert(
-                "C'mon Mr Sheppard! Wildcard imports are NOT allowed here.\n\
-                Uh Oh there goes your autocompletion and syntax highlighting"
+                "C'mon Mr Sheppard! Wildcard imports are NOT allowed here.\nUh Oh there goes your autocompletion and syntax highlighting"
             );
             setCompletion(false);
             setSyntaxHighlighting(false);
@@ -105,10 +102,10 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [code]);
 
-    const makeRequest = useCallback(async (id: string, code: string) => {
+    const makeRequest = useCallback(async (code: string, id: string) => {
         let response;
         try {
-            response = await fetch("https://rce.fusionsid.xyz/testcode", {
+            response = await fetch("http://localhost:8443/testcode", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -164,6 +161,7 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
                         json = await response.json();
                     } catch {
                         json = null;
+                        return clearInterval(loop);
                     }
                     setCurrentOutput(JSON.stringify(json, null, 4));
                     clearInterval(loop);
