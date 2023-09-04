@@ -161,12 +161,12 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
                 sizes={sizes}
                 onChange={setSizes}
             >
-                <Pane className="mr-1" minSize="20%" maxSize="45%">
+                <Pane className="mr-1" minSize="0%" maxSize="45%">
                     <div
-                        className="min-h-screen grid gap-1 grid-rows-2 grid-flow-col w-full mr-1"
+                        className="h-screen grid gap-1 grid-rows-2 grid-flow-col w-full mr-1"
                         style={{ gridTemplateRows: "80% 20%" }}
                     >
-                        <div className="bg-one rounded-md shadow-xl p-7 prose dark:prose-invert overflow-y-scroll no-scrollbar">
+                        <div className="bg-one rounded-md shadow-xl p-7 prose dark:prose-invert h-full overflow-y-scroll no-scrollbar">
                             <h1 className="text-white font-poppinsbold text-2xl drop-shadow-lg">
                                 {props.problem.title}
                             </h1>
