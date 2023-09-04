@@ -22,7 +22,7 @@ export default async function RootLayout({
 
     return (
         <html lang="en">
-            <body className="bg-[#181921]">
+            <body className="bg-[#181921] no-scrollbar">
                 <Provider session={session}>
                     <TrpcProvider>
                         <Navbar />
