@@ -72,6 +72,10 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
     }, []);
 
     useEffect(() => {
+        if (codingTime && autosave) {
+            localStorage.setItem(`${props.problem.id}-editor-code`, code);
+        }
+
         if (!completion || !syntaxHighlighting) {
             return;
         }
@@ -95,67 +99,51 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
             setSyntaxHighlighting(false);
         }
 
-        if (codingTime && autosave) {
-            localStorage.setItem(`${props.problem.id}-editor-code`, code);
-        }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [code]);
 
-    const makeRequest = useCallback(async (code: string, id: string) => {
-        let response;
-        try {
-            response = await fetch("http://localhost:8443/testcode", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    code: code,
-                    problem_id: id,
-                }),
-                cache: "no-store",
-            });
-        } catch {
-            return setCurrentOutput("Failed to queue job");
-        }
-
-        let json;
-        try {
-            json = await response.json();
-        } catch {
-            return setCurrentOutput("Failed to queue job");
-        }
-        if (json.success === true) {
-            const { jobID } = json;
-            setCurrentOutput(json.detail);
-            const loop = setInterval(async () => {
-                const response = await fetch(`/api/job_status?id=${jobID}`, {
-                    method: "GET",
+    const makeRequest = useCallback(
+        async (code: string, id: string, mode: "run" | "submit") => {
+            let response;
+            try {
+                response = await fetch("http://localhost:8443/testcode", {
+                    method: "POST",
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
                     },
+                    body: JSON.stringify({
+                        code: code,
+                        problem_id: id,
+                        mode: mode,
+                    }),
                     cache: "no-store",
                 });
-                let json;
-                try {
-                    json = await response.json();
-                } catch {
-                    json = null;
-                    return clearInterval(loop);
-                }
-                if (json.success && json.completed) {
-                    setCurrentOutput("Done");
-                    const response = await fetch(`/api/jobs?id=${jobID}`, {
-                        method: "GET",
-                        headers: {
-                            Accept: "application/json",
-                            "Content-Type": "application/json",
-                        },
-                        cache: "no-store",
-                    });
+            } catch {
+                return setCurrentOutput("Failed to queue job");
+            }
+
+            let json;
+            try {
+                json = await response.json();
+            } catch {
+                return setCurrentOutput("Failed to queue job");
+            }
+            if (json.success === true) {
+                const { jobID } = json;
+                setCurrentOutput(json.detail);
+                const loop = setInterval(async () => {
+                    const response = await fetch(
+                        `/api/job_status?id=${jobID}`,
+                        {
+                            method: "GET",
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json",
+                            },
+                            cache: "no-store",
+                        }
+                    );
                     let json;
                     try {
                         json = await response.json();
@@ -163,12 +151,31 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
                         json = null;
                         return clearInterval(loop);
                     }
-                    setCurrentOutput(JSON.stringify(json, null, 4));
-                    clearInterval(loop);
-                }
-            }, 1000);
-        }
-    }, []);
+                    if (json.success && json.completed) {
+                        setCurrentOutput("Done");
+                        const response = await fetch(`/api/jobs?id=${jobID}`, {
+                            method: "GET",
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json",
+                            },
+                            cache: "no-store",
+                        });
+                        let json;
+                        try {
+                            json = await response.json();
+                        } catch {
+                            json = null;
+                            return clearInterval(loop);
+                        }
+                        setCurrentOutput(JSON.stringify(json, null, 4));
+                        clearInterval(loop);
+                    }
+                }, 1000);
+            }
+        },
+        []
+    );
 
     useEffect(() => {
         const noAutoSave =
@@ -362,14 +369,32 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
                         />
                     </div>
                     <div className="bg-one h-full rounded-md shadow-xl p-7 overflow-scroll no-scrollbar">
-                        <button
-                            className="text-white"
-                            onClick={async () => {
-                                await makeRequest(code, props.problem.id);
-                            }}
-                        >
-                            Run
-                        </button>
+                        <div className="flex gap-3">
+                            <button
+                                className="text-white"
+                                onClick={async () => {
+                                    await makeRequest(
+                                        code,
+                                        props.problem.id,
+                                        "run"
+                                    );
+                                }}
+                            >
+                                Run
+                            </button>
+                            <button
+                                className="text-white"
+                                onClick={async () => {
+                                    await makeRequest(
+                                        code,
+                                        props.problem.id,
+                                        "submit"
+                                    );
+                                }}
+                            >
+                                Submit
+                            </button>
+                        </div>
                         <pre className="text-white">{currentOutput}</pre>
                     </div>
                 </div>
