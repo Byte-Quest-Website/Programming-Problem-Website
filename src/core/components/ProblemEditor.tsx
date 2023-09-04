@@ -14,12 +14,20 @@ import * as allThemes from "@uiw/codemirror-themes-all";
 const extensions = [python()];
 
 const ProblemEditor = (props: { problem: Problem; author: User }) => {
+    const [fullScreen, setFullScreen] = useState(false);
     const [currentOutput, setCurrentOutput] = useState("");
     const [code, setCode] = useState("");
     const [completion, setCompletion] = useState(true);
     const [theme, setTheme] = useState(THEMES.atomone);
     const [sizes, setSizes] = useState([250, "30%", "auto"]);
     const [syntaxHighlighting, setSyntaxHighlighting] = useState(true);
+
+    useEffect(() => {
+        if (fullScreen) {
+            return setSizes((sizes) => [0, sizes[1], sizes[2]]);
+        }
+        setSizes((sizes) => [250, sizes[1], sizes[2]]);
+    }, [fullScreen]);
 
     const ref = useRef<HTMLDivElement>(null);
 
@@ -234,7 +242,7 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
                     </div>
                 </Pane>
                 <div
-                    className="min-h-screen grid grid-rows-3 gap-1 grid-flow-col w-full ml-1"
+                    className="h-screen grid grid-rows-3 gap-1 grid-flow-col w-full ml-1"
                     style={{ gridTemplateRows: "5% 65% 30%" }}
                 >
                     <div className="bg-one rounded-md shadow-xl flex gap-2 justify-between items-center px-3">
@@ -262,6 +270,18 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
                                     })}
                                 </select>
                             </div>
+                            <button onClick={() => setFullScreen(!fullScreen)}>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="w-8 fill-white pr-2"
+                                    viewBox="0 0 1920 1920"
+                                >
+                                    <path
+                                        d="M1158.513-.012v123.68h550.5L123.68 1708.878V1158.5H0V1920h761.5v-123.68H211.121l1585.21-1585.21v550.5h123.68V-.011z"
+                                        fill-rule="evenodd"
+                                    />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                     <div
