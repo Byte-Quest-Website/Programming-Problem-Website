@@ -106,7 +106,7 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
         async (code: string, id: string, mode: "run" | "submit") => {
             let response;
             try {
-                response = await fetch("http://localhost:8443/testcode", {
+                response = await fetch("https://rce.fusionsid.xyz/testcode", {
                     method: "POST",
                     headers: {
                         Accept: "application/json",
