@@ -19,7 +19,7 @@ const Footer = () => {
           ];
 
     return (
-        <footer className="mt-12 p-4 w-full border-[#8D99AE] border-t-2 border-opacity-25">
+        <footer className="p-4 w-full border-[#8D99AE] border-t-2 border-opacity-25">
             <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
                 <span className="text-sm  sm:text-center text-gray-400">
                     © 2023{" "}

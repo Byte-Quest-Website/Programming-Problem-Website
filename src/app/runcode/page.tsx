@@ -102,7 +102,7 @@ const Page = () => {
     };
 
     return (
-        <div>
+        <div className="mb-16">
             <div className="flex flex-col items-center justify-center mt-10">
                 <div className="text-center text-eight">
                     <h1 className="font-poppinsbold text-[3.5rem]">Run Code</h1>
@@ -251,7 +251,6 @@ const Page = () => {
                     </div>
                 </form>
             </div>
-            <div></div>
         </div>
     );
 };
