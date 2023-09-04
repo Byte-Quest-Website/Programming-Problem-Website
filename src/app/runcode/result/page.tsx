@@ -33,7 +33,7 @@ const page = async ({ searchParams }: { searchParams: { data: string } }) => {
             {Object.keys(jsonData["data"]).map((key) => {
                 return (
                     <pre key={key} className="text-white">
-                        {key}: {JSON.stringify(jsonData["data"][key])}
+                        {key}: {JSON.stringify(jsonData["data"][key], null, 4)}
                     </pre>
                 );
             })}
