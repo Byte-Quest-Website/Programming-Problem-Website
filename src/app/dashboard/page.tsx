@@ -34,7 +34,9 @@ const Page = async () => {
             const p = await prisma.problem.findUnique({
                 where: { id: problem.id },
             });
-            if (p) solvedProblems.push(p);
+            if (p) {
+                solvedProblems.push(p);
+            }
         })
     );
 
@@ -53,7 +55,9 @@ const Page = async () => {
 
     const problemCount = { EASY: 0, MEDIUM: 0, HARD: 0 };
     solvedProblems.map((p) => {
-        if (p) problemCount[p.difficulty] = p.difficulty + 1;
+        if (p) {
+            problemCount[p.difficulty] = p.difficulty + 1;
+        }
     });
 
     const allUsers = await prisma.user.findMany({
