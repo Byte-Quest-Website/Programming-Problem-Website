@@ -32,24 +32,29 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
     }, []);
 
     async function makeRequest() {
-        const response = await fetch("http://localhost:8443/testcode", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                code: code,
-                problem_id: props.problem.id,
-            }),
-            cache: "no-store",
-        });
+        let response;
+        try {
+            response = await fetch("https://rce.fusionsid.xyz/testcode", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    code: code,
+                    problem_id: props.problem.id,
+                }),
+                cache: "no-store",
+            });
+        } catch {
+            return setCurrentOutput("Failed to queue job");
+        }
 
         let json;
         try {
             json = await response.json();
         } catch {
-            json = null;
+            return setCurrentOutput("Failed to queue job");
         }
         if (json.success === true) {
             const { jobID } = json;
@@ -68,6 +73,7 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
                     json = await response.json();
                 } catch {
                     json = null;
+                    return clearInterval(loop);
                 }
                 if (json.success && json.completed) {
                     setCurrentOutput("Done");
