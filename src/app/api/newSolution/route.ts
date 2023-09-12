@@ -103,6 +103,24 @@ export async function POST(request: NextRequest) {
             { status: 400 }
         );
     }
+
+    const alreadySolved =
+        (
+            await prisma.solution.findMany({
+                where: { userId: userId, problemId: problemId },
+            })
+        ).length !== 0;
+
+    if (!alreadySolved) {
+        const scoreIncrease =
+            ["EASY", "MEDIUM", "HARD"].indexOf(problem.difficulty.toString()) +
+            1;
+        await prisma.user.update({
+            where: { id: userId },
+            data: { score: { increment: scoreIncrease } },
+        });
+    }
+
     const solution = await prisma.solution.create({
         data: {
             code: code,
@@ -113,6 +131,7 @@ export async function POST(request: NextRequest) {
             userId: userId,
         },
     });
+
     return NextResponse.json(
         {
             success: true,
