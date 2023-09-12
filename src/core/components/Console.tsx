@@ -70,7 +70,6 @@ const Console = (props: { problem: Problem; code: string }) => {
 
                 const jobResult = await getJob(jobID);
                 if (jobResult !== undefined) {
-                    setCurrentOutput(JSON.stringify(jobResult, null, 4));
                     setApiResponse(jobResult);
                     if (jobResult.job.report.outcome == "pass" && session) {
                         await createNewSolution(
