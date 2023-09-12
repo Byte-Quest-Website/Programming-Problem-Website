@@ -28,17 +28,20 @@ const Page = async () => {
             userId: user.id,
         },
     });
-    let solvedProblems: Problem[] = [];
+
+    let solvedProblemsMap: Map<string, Problem> = new Map();
     await Promise.all(
-        solvedProblemsSolutions.map(async (problem) => {
+        solvedProblemsSolutions.map(async (solution) => {
             const p = await prisma.problem.findUnique({
-                where: { id: problem.id },
+                where: { id: solution.problemId },
             });
             if (p) {
-                solvedProblems.push(p);
+                solvedProblemsMap.set(p.id, p);
             }
         })
     );
+
+    const solvedProblems = Array.from(solvedProblemsMap.values());
 
     if (!userProblems || !solvedProblems || !solvedProblemsSolutions)
         return <>Not Logged In</>;
