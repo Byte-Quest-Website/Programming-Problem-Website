@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { PieChart } from "react-minimal-pie-chart";
 import { User, Solution, Problem } from "@prisma/client";
 
@@ -18,6 +18,7 @@ const Dashboard = (props: {
     rank: number;
 }) => {
     const [showLiked, setShowLiked] = useState(true);
+    const dashboardDivRef = useRef<HTMLDivElement>(null);
 
     const easyPercentage = props.problemCount.EASY / (props.totalEasy / 100);
     const mediumPercentage =
@@ -42,9 +43,14 @@ const Dashboard = (props: {
         },
     ];
 
+    useEffect(() => {
+        dashboardDivRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, []);
+
     return (
         <div className="h-screen">
             <div
+                ref={dashboardDivRef}
                 className="min-h-screen grid grid-rows-2 grid-flow-col w-full"
                 style={{ gridTemplateRows: "30% 70%" }}
             >
@@ -169,7 +175,9 @@ const Dashboard = (props: {
                                             data={pieChartData}
                                         />
                                     ) : (
-                                        <p className="text-white">Solve some problems for graph</p>
+                                        <p className="text-white">
+                                            Solve some problems for graph
+                                        </p>
                                     )}
                                 </div>
                             </div>
