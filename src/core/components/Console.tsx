@@ -1,10 +1,16 @@
 "use client";
 
+import { Job } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import { Problem } from "@prisma/client";
 import SyncLoader from "react-spinners/SyncLoader";
 import React, { useCallback, useState } from "react";
-import { testCode, getJob, getJobStatus } from "../helpers/requests";
-import { Job } from "@prisma/client";
+import {
+    testCode,
+    getJob,
+    getJobStatus,
+    createNewSolution,
+} from "../helpers/requests";
 
 interface JobResponse {
     success: true;
@@ -33,6 +39,8 @@ interface JobReportFail {
 type JobReport = JobReportPass | JobReportFail;
 
 const Console = (props: { problem: Problem; code: string }) => {
+    const { data: session } = useSession();
+
     const [currentOutput, setCurrentOutput] = useState("");
     const [apiResponse, setApiResponse] = useState<JobResponse | null>(null);
     const [showLoader, setShowLoader] = useState(false);
@@ -64,6 +72,14 @@ const Console = (props: { problem: Problem; code: string }) => {
                 if (jobResult !== undefined) {
                     setCurrentOutput(JSON.stringify(jobResult, null, 4));
                     setApiResponse(jobResult);
+                    if (jobResult.job.report.outcome == "pass" && session) {
+                        await createNewSolution(
+                            session.user.id,
+                            props.problem.id,
+                            jobID,
+                            code
+                        );
+                    }
                 } else {
                     setApiResponse(null);
                 }
@@ -74,6 +90,10 @@ const Console = (props: { problem: Problem; code: string }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
+
+    if (!session || !session.user) {
+        return <>Sign in</>;
+    }
 
     return (
         <div>
@@ -178,3 +198,10 @@ const Console = (props: { problem: Problem; code: string }) => {
 };
 
 export default Console;
+
+// TODO:
+// likes/dislikes
+// submit button creates Solution
+// update rank
+// list of solutions page
+// create problem page

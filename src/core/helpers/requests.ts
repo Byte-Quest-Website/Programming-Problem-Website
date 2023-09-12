@@ -102,3 +102,41 @@ export async function getJobStatus(id: string): Promise<boolean | void> {
     }
     return parsedResponse.data.completed;
 }
+
+export async function createNewSolution(
+    userId: string,
+    problemId: string,
+    jobId: string,
+    code: string
+): Promise<string | void> {
+    let response;
+    try {
+        response = await new Promise((resolve, reject) => {
+            fetch("/api/newSolution", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                cache: "no-store",
+                body: JSON.stringify({
+                    userId,
+                    problemId,
+                    jobId,
+                    code,
+                }),
+            })
+                .then((response) => response.json())
+                .then((json) => resolve(json))
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    } catch (err) {
+        return console.log("FAILED TO MAKE REQUEST POST SOLUTION REQUEST", err);
+    }
+    if (!response.success || response.solutionId === undefined) {
+        return;
+    }
+    return response.solutionId as string;
+}
