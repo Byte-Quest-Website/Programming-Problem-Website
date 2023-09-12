@@ -22,6 +22,10 @@ export default async function RootLayout({
 
     return (
         <html lang="en">
+            <head>
+                <link rel="icon" href="favicon.ico" sizes="any" />
+            </head>
+
             <body className="bg-[#181921] no-scrollbar">
                 <Provider session={session}>
                     <TrpcProvider>
