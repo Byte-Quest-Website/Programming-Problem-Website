@@ -4,13 +4,43 @@ import { Problem } from "@prisma/client";
 import SyncLoader from "react-spinners/SyncLoader";
 import React, { useCallback, useState } from "react";
 import { testCode, getJob, getJobStatus } from "../helpers/requests";
+import { Job } from "@prisma/client";
+
+interface JobResponse {
+    success: true;
+    job: Job & {
+        report: JobReport;
+    };
+}
+
+interface JobReportPass {
+    success: true;
+    outcome: "pass";
+    average_time: number;
+    memory_used: number;
+    memory_used_fmt: string;
+}
+
+interface JobReportFail {
+    success: true;
+    outcome: "fail";
+    reason: string;
+    fail_number: number;
+    stderr: string;
+    total_cases: number;
+}
+
+type JobReport = JobReportPass | JobReportFail;
 
 const Console = (props: { problem: Problem; code: string }) => {
     const [currentOutput, setCurrentOutput] = useState("");
+    const [apiResponse, setApiResponse] = useState<JobResponse | null>(null);
     const [showLoader, setShowLoader] = useState(false);
 
     const makeRequest = useCallback(
         async (code: string, id: string, mode: "run" | "submit") => {
+            setApiResponse(null);
+
             const jobID = await testCode(code, id, mode);
             if (jobID === undefined) {
                 return setCurrentOutput("failed to queue job");
@@ -33,11 +63,15 @@ const Console = (props: { problem: Problem; code: string }) => {
                 const jobResult = await getJob(jobID);
                 if (jobResult !== undefined) {
                     setCurrentOutput(JSON.stringify(jobResult, null, 4));
+                    setApiResponse(jobResult);
+                } else {
+                    setApiResponse(null);
                 }
                 setShowLoader(false);
                 clearInterval(checkJobStatusLoop);
             }, 1000);
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
 
@@ -79,7 +113,64 @@ const Console = (props: { problem: Problem; code: string }) => {
                         />
                     </div>
                 ) : (
-                    <pre className="text-white">{currentOutput}</pre>
+                    <>
+                        {apiResponse !== null ? (
+                            <div>
+                                <div className="text-white">
+                                    Result:{" "}
+                                    <span
+                                        className={
+                                            apiResponse.job.report.outcome ===
+                                            "fail"
+                                                ? "text-red-600"
+                                                : "text-green-600"
+                                        }
+                                    >
+                                        {apiResponse.job.report.outcome}
+                                    </span>
+                                </div>
+                                {apiResponse.job.report.outcome === "fail" ? (
+                                    <div className="text-white">
+                                        <h1>
+                                            Reason:{" "}
+                                            {apiResponse.job.report.reason !==
+                                            "idk"
+                                                ? apiResponse.job.report.reason
+                                                : apiResponse.job.report.stderr}
+                                        </h1>
+                                        <h1>
+                                            Failed Test Case:{" "}
+                                            {apiResponse.job.report.fail_number}
+                                        </h1>
+                                        <h1>
+                                            Total Test Cases:{" "}
+                                            {apiResponse.job.report.total_cases}
+                                        </h1>
+                                    </div>
+                                ) : (
+                                    <div className="text-white">
+                                        <h1>
+                                            Average Runtime:{" "}
+                                            {(
+                                                apiResponse.job.report
+                                                    .average_time * 1000
+                                            ).toPrecision(4)}
+                                            ms
+                                        </h1>
+                                        <h1>
+                                            Average Memory Used:{" "}
+                                            {
+                                                apiResponse.job.report
+                                                    .memory_used_fmt
+                                            }
+                                        </h1>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div>Run or Submit code for output</div>
+                        )}
+                    </>
                 )}
             </div>
         </div>
