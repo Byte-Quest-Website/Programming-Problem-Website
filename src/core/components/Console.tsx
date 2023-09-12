@@ -47,6 +47,7 @@ const Console = (props: { problem: Problem; code: string }) => {
 
     const makeRequest = useCallback(
         async (code: string, id: string, mode: "run" | "submit") => {
+            setShowLoader(true);
             setApiResponse(null);
 
             const jobID = await testCode(code, id, mode);
@@ -57,12 +58,11 @@ const Console = (props: { problem: Problem; code: string }) => {
             setCurrentOutput("job has been added to queue");
 
             const checkJobStatusLoop = setInterval(async () => {
-                setShowLoader(true);
-
                 const jobStatus = await getJobStatus(jobID);
                 if (jobStatus === undefined) {
                     setShowLoader(false);
                     setCurrentOutput("failed to get job status");
+
                     return clearTimeout(checkJobStatusLoop);
                 } else if (!jobStatus) {
                     return setCurrentOutput("job is processing");
@@ -96,28 +96,34 @@ const Console = (props: { problem: Problem; code: string }) => {
 
     return (
         <div>
-            <div className="flex gap-3">
-                <button
-                    className="text-white"
-                    onClick={async () => {
-                        await makeRequest(props.code, props.problem.id, "run");
-                    }}
-                >
-                    Run
-                </button>
-                <button
-                    className="text-white"
-                    onClick={async () => {
-                        await makeRequest(
-                            props.code,
-                            props.problem.id,
-                            "submit"
-                        );
-                    }}
-                >
-                    Submit
-                </button>
-            </div>
+            {!showLoader && (
+                <div className="flex gap-3">
+                    <button
+                        className="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-6 rounded"
+                        onClick={async () => {
+                            await makeRequest(
+                                props.code,
+                                props.problem.id,
+                                "run"
+                            );
+                        }}
+                    >
+                        Run
+                    </button>
+                    <button
+                        className="text-white bg-red-500 hover:bg-red-700 font-bold py-2 px-4 rounded"
+                        onClick={async () => {
+                            await makeRequest(
+                                props.code,
+                                props.problem.id,
+                                "submit"
+                            );
+                        }}
+                    >
+                        Submit
+                    </button>
+                </div>
+            )}
             <div>
                 {showLoader ? (
                     <div className="flex">
@@ -133,7 +139,7 @@ const Console = (props: { problem: Problem; code: string }) => {
                     </div>
                 ) : (
                     <>
-                        {apiResponse !== null ? (
+                        {apiResponse !== null && (
                             <div>
                                 <div className="text-white">
                                     Result:{" "}
@@ -186,8 +192,6 @@ const Console = (props: { problem: Problem; code: string }) => {
                                     </div>
                                 )}
                             </div>
-                        ) : (
-                            <div>Run or Submit code for output</div>
                         )}
                     </>
                 )}
@@ -200,7 +204,6 @@ export default Console;
 
 // TODO:
 // likes/dislikes
-// submit button creates Solution
-// update rank
 // list of solutions page
+// solution page
 // create problem page
