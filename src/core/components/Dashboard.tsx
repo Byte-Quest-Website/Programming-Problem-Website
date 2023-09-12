@@ -51,7 +51,7 @@ const Dashboard = (props: {
         <div className="h-screen">
             <div
                 ref={dashboardDivRef}
-                className="min-h-screen grid grid-rows-2 grid-flow-col w-full"
+                className="h-screen grid grid-rows-2 grid-flow-col w-full"
                 style={{ gridTemplateRows: "30% 70%" }}
             >
                 <div
@@ -84,7 +84,7 @@ const Dashboard = (props: {
                         </div>
                     </div>
                     <div className="bg-one m-2 mb-1 ml-1 rounded-xl shadow-xl">
-                        <div className="flex items-center">
+                        <div className="flex items-center h-full">
                             <div
                                 style={{ gridTemplateColumns: "65% 35%" }}
                                 className="grid grid-cols-2 w-full gap-5 p-6 items-center"
@@ -190,7 +190,7 @@ const Dashboard = (props: {
 
                 <div
                     style={{ gridTemplateColumns: "60% 40%" }}
-                    className="grid grid-cols-2 w-full max-h-[35rem]"
+                    className="grid grid-cols-2 w-full h-full"
                 >
                     <div className="bg-one m-2 mt-1 mr-1 rounded-xl shadow-xl overflow-y-scroll no-scrollbar">
                         <div className="text-center justify-center sticky top-0 bg-one rounded-2xl">
