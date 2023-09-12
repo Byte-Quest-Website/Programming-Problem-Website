@@ -18,7 +18,7 @@ const ProblemInfo = (props: { author: User; problem: Problem }) => {
                     {props.author.name}
                 </h1>
                 <h1 className="font-poppins">
-                    {props.problem.updatedAt.toLocaleString()}
+                    {props.problem.updatedAt.toDateString()}
                 </h1>
             </div>
             <div className="flex justify-between items-center text-white">

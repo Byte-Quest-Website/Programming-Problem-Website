@@ -72,10 +72,13 @@ const Dashboard = (props: {
                                 </h1>
                                 <p className="font-poppins text-white">
                                     Joined:{" "}
-                                    {props.user.createdAt.toLocaleDateString()}
+                                    {props.user.createdAt.toDateString()}
                                 </p>
                                 <p className="font-poppins text-white">
                                     Rank: #{props.rank}
+                                </p>
+                                <p className="font-poppins text-white">
+                                    Score: {props.user.score}
                                 </p>
                             </div>
                         </div>
