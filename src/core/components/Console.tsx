@@ -37,6 +37,7 @@ interface JobReportFail {
 }
 
 type JobReport = JobReportPass | JobReportFail;
+const CHECK_INTERVAL = 500; // ms
 
 const Console = (props: { problem: Problem; code: string }) => {
     const { data: session } = useSession();
@@ -84,7 +85,7 @@ const Console = (props: { problem: Problem; code: string }) => {
                 }
                 setShowLoader(false);
                 clearInterval(checkJobStatusLoop);
-            }, 1000);
+            }, CHECK_INTERVAL);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
@@ -97,9 +98,9 @@ const Console = (props: { problem: Problem; code: string }) => {
     return (
         <div>
             {!showLoader && (
-                <div className="flex gap-3">
+                <div className="flex gap-3 mb-5">
                     <button
-                        className="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-6 rounded"
+                        className="text-white bg-six hover:bg-blue-700 font-bold py-2 px-6 rounded"
                         onClick={async () => {
                             await makeRequest(
                                 props.code,
@@ -111,7 +112,7 @@ const Console = (props: { problem: Problem; code: string }) => {
                         Run
                     </button>
                     <button
-                        className="text-white bg-red-500 hover:bg-red-700 font-bold py-2 px-4 rounded"
+                        className="text-white bg-red-500 hover:bg-five font-bold py-2 px-4 rounded"
                         onClick={async () => {
                             await makeRequest(
                                 props.code,
