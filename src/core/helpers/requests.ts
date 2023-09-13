@@ -140,3 +140,35 @@ export async function createNewSolution(
     }
     return response.solutionId as string;
 }
+
+export async function updateProblemVote(
+    state: 0 | 1 | -1,
+    userId: string,
+    problemId: string
+) {
+    let response;
+    try {
+        response = await new Promise((resolve, reject) => {
+            fetch("/api/updateProblemVote", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                cache: "no-store",
+                body: JSON.stringify({
+                    state: state,
+                    userId,
+                    problemId,
+                }),
+            })
+                .then((response) => response.json())
+                .then((json) => resolve(json))
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    } catch (err) {
+        return console.log("FAILED TO MAKE UPDATE VOTE REQUEST", err);
+    }
+}
