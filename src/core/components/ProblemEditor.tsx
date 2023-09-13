@@ -134,10 +134,12 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
                         className="h-screen grid gap-1 grid-rows-2 grid-flow-col w-full mr-1"
                         style={{ gridTemplateRows: "80% 20%" }}
                     >
-                        <div className="bg-one rounded-md shadow-xl p-7 prose dark:prose-invert h-full overflow-y-scroll no-scrollbar">
-                            <h1 className="text-white font-poppinsbold text-2xl drop-shadow-lg">
-                                {props.problem.title}
-                            </h1>
+                        <div className="bg-one rounded-md shadow-xl p-7 pt-0 prose dark:prose-invert h-full overflow-y-scroll no-scrollbar">
+                            <div className="sticky bg-one top-0">
+                                <h1 className="text-white font-poppinsbold text-2xl drop-shadow-lg pt-7">
+                                    {props.problem.title}
+                                </h1>
+                            </div>
                             <Markdown markdown={props.problem.description} />
                         </div>
                         <div className="bg-one rounded-md shadow-xl p-7 flex flex-col justify-between">
