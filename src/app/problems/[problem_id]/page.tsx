@@ -21,8 +21,14 @@ const page = async ({ params }: { params: { problem_id: string } }) => {
     if (!problem) {
         return <>404</>;
     }
-    const user = await prisma.user.findUnique({
+    const author = await prisma.user.findUnique({
         where: { id: problem.userId },
+    });
+    if (!author) {
+        return <>404</>;
+    }
+    const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
     });
     if (!user) {
         return <>404</>;
@@ -30,7 +36,7 @@ const page = async ({ params }: { params: { problem_id: string } }) => {
 
     return (
         <div>
-            <ProblemEditor problem={problem} author={user} />
+            <ProblemEditor problem={problem} author={author} user={user} />
         </div>
     );
 };

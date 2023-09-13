@@ -216,6 +216,4 @@ export default Console;
 
 // TODO:
 // likes/dislikes
-// list of solutions page
-// solution page
 // create problem page

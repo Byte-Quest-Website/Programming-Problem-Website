@@ -13,7 +13,11 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 
 const extensions = [python()];
 
-const ProblemEditor = (props: { problem: Problem; author: User }) => {
+const ProblemEditor = (props: {
+    problem: Problem;
+    author: User;
+    user: User;
+}) => {
     const [code, setCode] = useState("");
     const [autosave, setAutosave] = useState(true);
     const [codingTime, setCodingTime] = useState(false);
@@ -144,6 +148,7 @@ const ProblemEditor = (props: { problem: Problem; author: User }) => {
                         </div>
                         <div className="bg-one rounded-md shadow-xl p-7 flex flex-col justify-between">
                             <ProblemInfo
+                                user={props.user}
                                 author={props.author}
                                 problem={props.problem}
                             />
