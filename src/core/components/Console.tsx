@@ -73,7 +73,6 @@ const Console = (props: { problem: Problem; code: string }) => {
                 const jobResult = await getJob(jobID);
                 if (jobResult !== undefined) {
                     setApiResponse(jobResult);
-                    console.log(jobResult);
                     if (jobResult.job.report.outcome == "pass" && session) {
                         await createNewSolution(
                             session.user.id,
