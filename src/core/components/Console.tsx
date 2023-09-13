@@ -34,6 +34,7 @@ interface JobReportFail {
     fail_number: number;
     stderr: string;
     total_cases: number;
+    assertion_reason: string;
 }
 
 type JobReport = JobReportPass | JobReportFail;
@@ -72,6 +73,7 @@ const Console = (props: { problem: Problem; code: string }) => {
                 const jobResult = await getJob(jobID);
                 if (jobResult !== undefined) {
                     setApiResponse(jobResult);
+                    console.log(jobResult);
                     if (jobResult.job.report.outcome == "pass" && session) {
                         await createNewSolution(
                             session.user.id,
@@ -164,6 +166,16 @@ const Console = (props: { problem: Problem; code: string }) => {
                                                 ? apiResponse.job.report.reason
                                                 : apiResponse.job.report.stderr}
                                         </h1>
+                                        {apiResponse.job.report.reason ===
+                                            "AssertionError" && (
+                                            <h1>
+                                                {
+                                                    apiResponse.job.report.assertion_reason.split(
+                                                        "\nassert"
+                                                    )[0]
+                                                }
+                                            </h1>
+                                        )}
                                         <h1>
                                             Failed Test Case:{" "}
                                             {apiResponse.job.report.fail_number}
