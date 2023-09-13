@@ -1,9 +1,12 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Problem, User } from "@prisma/client";
 
 const ProblemInfo = (props: { author: User; problem: Problem }) => {
+    const router = useRouter();
+
     const difficultyColors = {
         EASY: "#A5D76E",
         MEDIUM: "#F6C36F",
@@ -66,7 +69,13 @@ const ProblemInfo = (props: { author: User; problem: Problem }) => {
                 >
                     DIFFICULTY {props.problem.difficulty}
                 </h1>
-                <button>Solutions</button>
+                <button
+                    onClick={() => {
+                        router.push(`${props.problem.id}/solutions`);
+                    }}
+                >
+                    Solutions
+                </button>
             </div>
         </>
     );
