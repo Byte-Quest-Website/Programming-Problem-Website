@@ -78,7 +78,7 @@ export async function getJobStatus(id: string): Promise<boolean | void> {
     let response;
     try {
         response = await new Promise((resolve, reject) => {
-            fetch(`/api/job_status?id=${id}`, {
+            fetch(`/api/jobs/status?id=${id}`, {
                 method: "GET",
                 headers: {
                     Accept: "application/json",
@@ -112,7 +112,7 @@ export async function createNewSolution(
     let response;
     try {
         response = await new Promise((resolve, reject) => {
-            fetch("/api/newSolution", {
+            fetch("/api/solutions", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -149,8 +149,8 @@ export async function updateProblemVote(
     let response;
     try {
         response = await new Promise((resolve, reject) => {
-            fetch("/api/updateProblemVote", {
-                method: "POST",
+            fetch("/api/problems", {
+                method: "PATCH",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
