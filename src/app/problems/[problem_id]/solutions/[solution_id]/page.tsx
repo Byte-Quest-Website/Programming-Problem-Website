@@ -11,7 +11,9 @@ const page = async ({
     params: { solution_id: string; problem_id: string };
 }) => {
     const session = await getServerSession(authOptions);
-    if (!session) return <>NOT LOGGED IN</>;
+    if (!session) {
+        return <div className="text-white">Please Log In</div>;
+    }
 
     const user = await prisma.user.findUnique({
         where: { id: session.user.id },

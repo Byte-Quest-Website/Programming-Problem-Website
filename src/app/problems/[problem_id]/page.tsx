@@ -8,7 +8,9 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const page = async ({ params }: { params: { problem_id: string } }) => {
     const session = await getServerSession(authOptions);
-    if (!session) return <>NOT LOGGED IN</>;
+    if (!session) {
+        return <div className="text-white">Please Log In</div>;
+    }
 
     const isUUID = z.string().uuid().safeParse(params.problem_id).success;
     if (!isUUID) {

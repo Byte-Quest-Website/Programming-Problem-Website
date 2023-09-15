@@ -7,7 +7,9 @@ import Dashboard from "@/core/components/Dashboard";
 
 const Page = async () => {
     const session = await getServerSession(authOptions);
-    if (!session) return <>NOT LOGGED IN</>;
+    if (!session) {
+        return <div className="text-white">Please Log In</div>;
+    }
 
     const user = await prisma.user.findUnique({
         where: { email: session.user.email },
