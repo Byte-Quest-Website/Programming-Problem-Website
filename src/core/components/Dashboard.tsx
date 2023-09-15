@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { PieChart } from "react-minimal-pie-chart";
 import { User, Solution, Problem } from "@prisma/client";
+import Image from "next/image";
 
 const Dashboard = (props: {
     user: User;
@@ -60,10 +61,11 @@ const Dashboard = (props: {
                 >
                     <div className="bg-one m-2 mb-1 mr-1 rounded-xl shadow-xl flex items-center">
                         <div className="flex items-center p-7">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                            <Image
                                 src={props.user.image!}
                                 alt={`profile picture for ${props.user.name}`}
+                                width={100}
+                                height={100}
                                 className="rounded-full w-36 mr-3"
                             />
                             <div className="ml-2">
