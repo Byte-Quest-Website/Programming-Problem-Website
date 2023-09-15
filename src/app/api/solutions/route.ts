@@ -1,9 +1,9 @@
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { NextResponse, NextRequest } from "next/server";
 
 import prisma from "@/core/db/orm";
-import { Prisma } from "@prisma/client";
 import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET(request: NextRequest) {
@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
             { status: 401 }
         );
     }
+
     const parsedURL = new URL(request.url);
 
     let id = parsedURL.searchParams.get("id");

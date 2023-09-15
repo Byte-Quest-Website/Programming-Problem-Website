@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
             { status: 401 }
         );
     }
+
     const parsedURL = new URL(request.url);
 
     let id = parsedURL.searchParams.get("id");
@@ -64,6 +65,18 @@ export async function GET(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+        return NextResponse.json(
+            {
+                success: false,
+                detail: "Not Authenticated",
+            },
+            { status: 401 }
+        );
+    }
+
     const requestData: RequestData = await request.json();
     const { state, problemId, userId } = requestData;
 

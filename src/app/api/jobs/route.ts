@@ -1,9 +1,23 @@
 import { z } from "zod";
+import { getServerSession } from "next-auth";
 import { NextResponse, NextRequest } from "next/server";
-import redis from "@/core/db/redis";
+
 import prisma from "@/core/db/orm";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET(request: NextRequest) {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+        return NextResponse.json(
+            {
+                success: false,
+                detail: "Not Authenticated",
+            },
+            { status: 401 }
+        );
+    }
+
     const parsedURL = new URL(request.url);
 
     let id = parsedURL.searchParams.get("id");
