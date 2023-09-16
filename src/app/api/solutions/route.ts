@@ -176,6 +176,21 @@ export async function POST(request: NextRequest) {
         });
     }
 
+    const alreadyExistingSolution = await prisma.solution.findFirst({
+        where: { jobId: jobId },
+    });
+
+    if (alreadyExistingSolution) {
+        return NextResponse.json(
+            {
+                success: true,
+                detail: "already created solution",
+                solutionId: alreadyExistingSolution.id,
+            },
+            { status: 200 }
+        );
+    }
+
     const solution = await prisma.solution.create({
         data: {
             code: code,
