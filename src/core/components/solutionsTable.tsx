@@ -6,31 +6,8 @@ import React, { useState } from "react";
 import { Solution } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { Theme } from "@radix-ui/themes";
+import humanFileSize from "../utils/formatMemory";
 import { Table, TextField, Button } from "@radix-ui/themes";
-
-function humanFileSize(bytes, si = false, dp = 1) {
-    const thresh = si ? 1000 : 1024;
-
-    if (Math.abs(bytes) < thresh) {
-        return bytes + " B";
-    }
-
-    const units = si
-        ? ["kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
-        : ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
-    let u = -1;
-    const r = 10 ** dp;
-
-    do {
-        bytes /= thresh;
-        ++u;
-    } while (
-        Math.round(Math.abs(bytes) * r) / r >= thresh &&
-        u < units.length - 1
-    );
-
-    return bytes.toFixed(dp) + " " + units[u];
-}
 
 const SolutionItem = ({
     solution,
@@ -70,6 +47,8 @@ function SolutionsTable({
     solutionAuthors: Map<string, string>;
     solutions: Solution[];
 }) {
+    const router = useRouter();
+
     const solutionsData = solutions.map((s) => {
         return {
             ...s,
@@ -124,7 +103,14 @@ function SolutionsTable({
                         />
                     </TextField.Root>
                     <div>
-                        <Button>Create</Button>
+                        <Button
+                            className="w-36"
+                            onClick={() => {
+                                router.push(`/problems/${problemId}`);
+                            }}
+                        >
+                            Visit Problem
+                        </Button>
                     </div>
                 </div>
                 <Table.Root variant="surface">
