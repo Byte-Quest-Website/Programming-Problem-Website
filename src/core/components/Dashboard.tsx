@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import "@radix-ui/themes/styles.css";
 import { PieChart } from "react-minimal-pie-chart";
 import { User, Solution, Problem } from "@prisma/client";
 import Image from "next/image";
+import { Avatar } from "@radix-ui/themes";
 
 const Dashboard = (props: {
     user: User;
@@ -48,6 +50,8 @@ const Dashboard = (props: {
         dashboardDivRef.current?.scrollIntoView({ behavior: "smooth" });
     }, []);
 
+    props.user.image = null;
+
     return (
         <div className="h-screen">
             <div
@@ -61,13 +65,20 @@ const Dashboard = (props: {
                 >
                     <div className="bg-one m-2 mb-1 mr-1 rounded-xl shadow-xl flex items-center">
                         <div className="flex items-center p-7">
-                            <Image
-                                src={props.user.image!}
-                                alt={`profile picture for ${props.user.name}`}
-                                width={100}
-                                height={100}
-                                className="rounded-full w-36 mr-3"
-                            />
+                            {props.user.image !== null ? (
+                                <Image
+                                    src={props.user.image}
+                                    alt={`profile picture for ${props.user.name}`}
+                                    width={100}
+                                    height={100}
+                                    className="rounded-full w-36 mr-3"
+                                />
+                            ) : (
+                                <Avatar
+                                    fallback="S"
+                                    className="rounded-full w-96 mr-3"
+                                />
+                            )}
                             <div className="ml-2">
                                 <h1 className="font-poppinsbold text-xl text-white">
                                     {props.user.name}
