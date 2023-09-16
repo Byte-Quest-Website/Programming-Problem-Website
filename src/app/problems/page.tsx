@@ -2,10 +2,8 @@ import React from "react";
 import { getServerSession } from "next-auth";
 
 import prisma from "@/core/db/orm";
-import ProblemItem from "@/core/components/problemItem";
+import ProblemsTable from "@/core/components/problemsTable";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import { Table } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
 
 const Problems = async () => {
     const session = await getServerSession(authOptions);
@@ -14,45 +12,40 @@ const Problems = async () => {
     }
 
     const problems = await prisma.problem.findMany();
+    const problemAuthors = new Map<string, string>();
+    await Promise.all(
+        problems.map(async (p) => {
+            const user = await prisma.user.findUnique({
+                where: { id: p.userId },
+            });
+            problemAuthors.set(p.id, user?.name ?? "");
+        })
+    );
+    const solvedByUser = new Map<string, boolean>();
+    await Promise.all(
+        problems.map(async (p) => {
+            const solved = await prisma.solution.findFirst({
+                select: { id: true },
+                where: { problemId: p.id, userId: session.user.id },
+            });
+            solvedByUser.set(p.id, solved !== null);
+        })
+    );
 
     return (
-        <div>
-            <Table.Root variant="surface">
-                <Table.Header>
-                    <Table.Row>
-                        <Table.ColumnHeaderCell>
-                            Full name
-                        </Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>Group</Table.ColumnHeaderCell>
-                    </Table.Row>
-                </Table.Header>
-
-                <Table.Body>
-                    <Table.Row>
-                        <Table.RowHeaderCell>Danilo Sousa</Table.RowHeaderCell>
-                        <Table.Cell>danilo@example.com</Table.Cell>
-                        <Table.Cell>Developer</Table.Cell>
-                    </Table.Row>
-
-                    <Table.Row>
-                        <Table.RowHeaderCell>Zahra Ambessa</Table.RowHeaderCell>
-                        <Table.Cell>zahra@example.com</Table.Cell>
-                        <Table.Cell>Admin</Table.Cell>
-                    </Table.Row>
-
-                    <Table.Row>
-                        <Table.RowHeaderCell>
-                            Jasper Eriksson
-                        </Table.RowHeaderCell>
-                        <Table.Cell>jasper@example.com</Table.Cell>
-                        <Table.Cell>Developer</Table.Cell>
-                    </Table.Row>
-                </Table.Body>
-            </Table.Root>
-            {problems.map((problem) => {
-                return <ProblemItem key={problem.id} problem={problem} />;
-            })}
+        <div className="p-10 h-full">
+            <div className="flex items-center justify-center mb-10">
+                <h1 className="text-white text-[2.5rem] font-poppinsbold">
+                    All Problems
+                </h1>
+            </div>
+            <div>
+                <ProblemsTable
+                    problems={problems}
+                    problemAuthors={problemAuthors}
+                    solvedByUser={solvedByUser}
+                />
+            </div>
         </div>
     );
 };
