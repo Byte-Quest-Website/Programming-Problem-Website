@@ -50,8 +50,6 @@ const Dashboard = (props: {
         dashboardDivRef.current?.scrollIntoView({ behavior: "smooth" });
     }, []);
 
-    props.user.image = null;
-
     return (
         <div className="h-screen">
             <div
