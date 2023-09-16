@@ -10,6 +10,7 @@ import { python } from "@codemirror/lang-python";
 import "split-pane-react/esm/themes/default.css";
 import SplitPane, { Pane } from "split-pane-react";
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import ProblemMenu from "./ProblemMenu";
 
 const extensions = [python()];
 
@@ -163,66 +164,16 @@ const ProblemEditor = (props: {
                         <h1 className="font-poppinsbold text-xl text-white">
                             Code Editor
                         </h1>
-                        <div className="flex items-center gap-4">
-                            <div>
-                                <div className="flex items-center p-2 rounded">
-                                    <input
-                                        type="checkbox"
-                                        checked={autosave}
-                                        onChange={(e) => {
-                                            const newSaveValue = !autosave;
-                                            localStorage.setItem(
-                                                `${props.problem.id}-editor-autosave`,
-                                                newSaveValue ? "true" : "false"
-                                            );
-                                            setAutosave(newSaveValue);
-                                            if (newSaveValue) {
-                                                localStorage.removeItem(
-                                                    `${props.problem.id}-editor-code`
-                                                );
-                                            }
-                                        }}
-                                        className="w-4 h-4 bg-gray-600 border-gray-500"
-                                    />
-                                    <label className="ml-2 text-md font-poppins rounded text-white">
-                                        Save
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                                <h1 className="text-white font-poppins">
-                                    Theme:
-                                </h1>
-                                <select
-                                    defaultValue={"atomone"}
-                                    className="text-sm font-poppins rounded-lg block h-8 w-52 pl-2 bg-gray-700 border-gray-600 text-white focus:ring-blue-500 focus:border-blue-500 "
-                                    onChange={(e) => {
-                                        setTheme(THEMES[e.target.value]);
-                                    }}
-                                >
-                                    {Object.keys(THEMES).map((key) => {
-                                        return (
-                                            <option value={key} key={key}>
-                                                {key}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                            </div>
-                            <button onClick={() => setFullScreen(!fullScreen)}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-8 fill-white pr-2"
-                                    viewBox="0 0 1920 1920"
-                                >
-                                    <path
-                                        d="M1158.513-.012v123.68h550.5L123.68 1708.878V1158.5H0V1920h761.5v-123.68H211.121l1585.21-1585.21v550.5h123.68V-.011z"
-                                        fillRule="evenodd"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
+                        <ProblemMenu
+                            autosave={autosave}
+                            setAutosave={setAutosave}
+                            setTheme={setTheme}
+                            fullScreen={fullScreen}
+                            setFullScreen={setFullScreen}
+                            problemID={props.problem.id}
+                        />
                     </div>
+
                     <div
                         style={{ background: theme[1].background }}
                         className="overflow-y-scroll no-scrollbar rounded-md shadow-xl h-full"
