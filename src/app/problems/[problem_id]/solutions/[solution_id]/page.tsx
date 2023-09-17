@@ -64,9 +64,9 @@ const page = async ({
     }
 
     return (
-        <div className="mb-14">
+        <main className="mb-14">
             <SolutionData solution={solution} author={solutionAuthor} />
-        </div>
+        </main>
     );
 };
 

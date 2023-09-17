@@ -54,20 +54,20 @@ const AllSolutions = async ({ params }: { params: { problem_id: string } }) => {
     );
 
     return (
-        <div className="p-10 h-full">
-            <div className="flex items-center justify-center mb-10">
+        <main className="p-10 h-full">
+            <header className="flex items-center justify-center mb-10">
                 <h1 className="text-white text-[2.5rem] font-poppinsbold">
                     All Solutions
                 </h1>
-            </div>
-            <div>
+            </header>
+            <section>
                 <SolutionsTable
                     problemId={problem.id}
                     solutions={solutions}
                     solutionAuthors={solutionAuthors}
                 />
-            </div>
-        </div>
+            </section>
+        </main>
     );
 };
 

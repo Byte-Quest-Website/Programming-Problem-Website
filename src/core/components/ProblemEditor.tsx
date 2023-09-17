@@ -139,28 +139,28 @@ const ProblemEditor = (props: {
                         className="h-screen grid gap-1 grid-rows-2 grid-flow-col w-full mr-1"
                         style={{ gridTemplateRows: "80% 20%" }}
                     >
-                        <div className="bg-one rounded-md shadow-xl p-7 pt-0 prose dark:prose-invert h-full overflow-y-scroll no-scrollbar">
+                        <section className="bg-one rounded-md shadow-xl p-7 pt-0 prose dark:prose-invert h-full overflow-y-scroll no-scrollbar">
                             <div className="sticky bg-one top-0">
                                 <h1 className="text-white font-poppinsbold text-2xl drop-shadow-lg pt-7">
                                     {props.problem.title}
                                 </h1>
                             </div>
                             <Markdown markdown={props.problem.description} />
-                        </div>
-                        <div className="bg-one rounded-md shadow-xl p-7 flex flex-col justify-between">
+                        </section>
+                        <section className="bg-one rounded-md shadow-xl p-7 flex flex-col justify-between">
                             <ProblemInfo
                                 user={props.user}
                                 author={props.author}
                                 problem={props.problem}
                             />
-                        </div>
+                        </section>
                     </div>
                 </Pane>
                 <div
                     className="h-screen grid grid-rows-3 gap-1 grid-flow-col w-full ml-1"
                     style={{ gridTemplateRows: "5% 65% 30%" }}
                 >
-                    <div className="bg-one rounded-md shadow-xl flex gap-2 justify-between items-center px-3">
+                    <section className="bg-one rounded-md shadow-xl flex gap-2 justify-between items-center px-3">
                         <h1 className="font-poppinsbold text-xl text-white">
                             Code Editor
                         </h1>
@@ -172,9 +172,9 @@ const ProblemEditor = (props: {
                             setFullScreen={setFullScreen}
                             problemID={props.problem.id}
                         />
-                    </div>
+                    </section>
 
-                    <div
+                    <section
                         style={{ background: theme[1].background }}
                         className="overflow-y-scroll no-scrollbar rounded-md shadow-xl h-full"
                     >
@@ -191,10 +191,10 @@ const ProblemEditor = (props: {
                                 syntaxHighlighting: syntaxHighlighting,
                             }}
                         />
-                    </div>
-                    <div className="bg-one h-full rounded-md shadow-xl p-7 overflow-scroll no-scrollbar">
+                    </section>
+                    <section className="bg-one h-full rounded-md shadow-xl p-7 overflow-scroll no-scrollbar">
                         <Console problem={props.problem} code={code} />
-                    </div>
+                    </section>
                 </div>
             </SplitPane>
         </div>

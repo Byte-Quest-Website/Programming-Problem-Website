@@ -16,7 +16,7 @@ const SolutionData = ({
 }) => {
     return (
         <div className="flex items-center justify-center w-full">
-            <div className="flex flex-col items-center justify-center p-10 gap-3">
+            <section className="flex flex-col items-center justify-center p-10 gap-3">
                 <h1 className="font-poppinsbold text-[2.5rem] mb-4">
                     Solution
                 </h1>
@@ -61,7 +61,7 @@ const SolutionData = ({
                         {humanFileSize(solution.memoryUsed)}
                     </h3>
                 </div>
-            </div>
+            </section>
         </div>
     );
 };

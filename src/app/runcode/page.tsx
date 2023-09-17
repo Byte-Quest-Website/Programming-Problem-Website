@@ -102,9 +102,9 @@ const Page = () => {
     };
 
     return (
-        <div className="h-screen">
+        <main className="h-screen">
             <div className="flex flex-col items-center justify-center mt-10">
-                <div className="text-center text-eight">
+                <header className="text-center text-eight">
                     <h1 className="font-poppinsbold text-[3.5rem]">Run Code</h1>
                     <p className="font-poppins text-[1rem]">
                         Code will get 25mb of memory and 5 seconds to run <br />
@@ -115,7 +115,7 @@ const Page = () => {
                             })
                             .join(", ")}
                     </p>
-                </div>
+                </header>
 
                 <form
                     onSubmit={(e) => {
@@ -251,7 +251,7 @@ const Page = () => {
                     </div>
                 </form>
             </div>
-        </div>
+        </main>
     );
 };
 

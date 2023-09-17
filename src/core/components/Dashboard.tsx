@@ -61,7 +61,7 @@ const Dashboard = (props: {
                     style={{ gridTemplateColumns: "30% 70%" }}
                     className="grid grid-cols-2 w-full"
                 >
-                    <div className="bg-one m-2 mb-1 mr-1 rounded-xl shadow-xl flex items-center">
+                    <section className="bg-one m-2 mb-1 mr-1 rounded-xl shadow-xl flex items-center">
                         <div className="flex items-center p-7">
                             {props.user.image !== null ? (
                                 <Image
@@ -93,8 +93,8 @@ const Dashboard = (props: {
                                 </p>
                             </div>
                         </div>
-                    </div>
-                    <div className="bg-one m-2 mb-1 ml-1 rounded-xl shadow-xl">
+                    </section>
+                    <section className="bg-one m-2 mb-1 ml-1 rounded-xl shadow-xl">
                         <div className="flex items-center h-full">
                             <div
                                 style={{ gridTemplateColumns: "65% 35%" }}
@@ -196,19 +196,19 @@ const Dashboard = (props: {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
 
                 <div
                     style={{ gridTemplateColumns: "60% 40%" }}
                     className="grid grid-cols-2 w-full h-full"
                 >
-                    <div className="bg-one m-2 mt-1 mr-1 rounded-xl shadow-xl overflow-y-scroll no-scrollbar">
-                        <div className="text-center justify-center sticky top-0 bg-one rounded-2xl">
+                    <section className="bg-one m-2 mt-1 mr-1 rounded-xl shadow-xl overflow-y-scroll no-scrollbar">
+                        <header className="text-center justify-center sticky top-0 bg-one rounded-2xl">
                             <h1 className="text-white p-5 font-poppinsbold text-2xl">
                                 My Problems
                             </h1>
-                        </div>
+                        </header>
                         <div className="px-5">
                             {props.problems.map((problem) => {
                                 return (
@@ -221,9 +221,9 @@ const Dashboard = (props: {
                                 );
                             })}
                         </div>
-                    </div>
+                    </section>
                     <div className="bg-one m-2 mt-1 ml-1 rounded-xl shadow-xl overflow-y-scroll no-scrollbar">
-                        <div className="flex items-center justify-center sticky top-0 bg-one rounded-2xl">
+                        <header className="flex items-center justify-center sticky top-0 bg-one rounded-2xl">
                             <button
                                 className={`text-white p-5 font-poppinsbold text-2xl${
                                     !showLiked ? " text-opacity-25" : ""
@@ -240,8 +240,8 @@ const Dashboard = (props: {
                             >
                                 Disliked Problems
                             </button>
-                        </div>
-                        <div className="px-5">
+                        </header>
+                        <section className="px-5">
                             {showLiked
                                 ? props.likedProblems.map((problem) => {
                                       return (
@@ -263,7 +263,7 @@ const Dashboard = (props: {
                                           </div>
                                       );
                                   })}
-                        </div>
+                        </section>
                     </div>
                 </div>
             </div>

@@ -37,9 +37,9 @@ const page = async ({ params }: { params: { problem_id: string } }) => {
     }
 
     return (
-        <div>
+        <main>
             <ProblemEditor problem={problem} author={author} user={user} />
-        </div>
+        </main>
     );
 };
 

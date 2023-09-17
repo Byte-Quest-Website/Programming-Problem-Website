@@ -33,20 +33,20 @@ const Problems = async () => {
     );
 
     return (
-        <div className="p-10 h-full">
-            <div className="flex items-center justify-center mb-10">
+        <main className="p-10 h-full">
+            <header className="flex items-center justify-center mb-10">
                 <h1 className="text-white text-[2.5rem] font-poppinsbold">
                     All Problems
                 </h1>
-            </div>
-            <div>
+            </header>
+            <section>
                 <ProblemsTable
                     problems={problems}
                     problemAuthors={problemAuthors}
                     solvedByUser={solvedByUser}
                 />
-            </div>
-        </div>
+            </section>
+        </main>
     );
 };
 
