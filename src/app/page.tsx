@@ -1,32 +1,69 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { signIn } from "next-auth/react";
 
 export default function Home() {
     return (
         <main className="flex-col md:flex-row flex items-center justify-center h-full mt-16 mb-24 md:mt-32">
-            <div className="flex flex-col md:inline justify-center items-center">
-                <h1 className="text-[#EDF2F4] text-[2.15rem] sm:text-[3rem] font-poppinsbold md:mb-6 xl:leading-[5rem] text-center md:text-left md:text-[2rem] lg:text-[3rem] xl:text-[3.5rem] 2xl:text-[4rem]">
+            <motion.div className="flex flex-col md:inline justify-center items-center">
+                <motion.h1
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                        delay: 0,
+                        duration: 1,
+                        ease: "easeInOut",
+                    }}
+                    className="text-[#EDF2F4] text-[2.15rem] sm:text-[3rem] font-poppinsbold md:mb-6 xl:leading-[5rem] text-center md:text-left md:text-[2rem] lg:text-[3rem] xl:text-[3.5rem] 2xl:text-[4rem]"
+                >
                     Achieve Mastery
                     <br />
                     Through a Challenge
-                </h1>
-                <p className="text-[#EDF2F4] text-center sm:text-[1.15rem] md:text-left md:text-[0.75rem] lg:text-[1.1rem] 2xl:text-[1.25rem] my-6 ">
+                </motion.h1>
+                <motion.p
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                        delay: 0.5,
+                        duration: 1,
+                        ease: "easeInOut",
+                    }}
+                    className="text-[#EDF2F4] text-center sm:text-[1.15rem] md:text-left md:text-[0.75rem] lg:text-[1.1rem] 2xl:text-[1.25rem] my-6 "
+                >
                     Welcome to our ByteQuest - the spiciest coding platform{" "}
                     <br />
                     Lets enhance your skills through exciting challenges and
                     conquer the world of coding
-                </p>
-                <button
-                    onClick={() => signIn()}
-                    className="bg-five transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-four duration-300 text-sm px-6 py-3 text-white sm:mb-5 sm:text-lg sm:px-10 sm:py-3 text-center md:text-left md:text-sm md:px-4 md:py-2 lg:px-9 lg:py-3 2xl:px-12 lg:mt-6 rounded-xl lg:text-md"
+                </motion.p>
+                <motion.div
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                        delay: 1,
+                        duration: 1,
+                        ease: "easeInOut",
+                    }}
                 >
-                    Sign Up Today!
-                </button>
-            </div>
-            <div>
+                    <button
+                        onClick={() => signIn()}
+                        className="bg-five transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-four duration-300 text-sm px-6 py-3 text-white sm:mb-5 sm:text-lg sm:px-10 sm:py-3 text-center md:text-left md:text-sm md:px-4 md:py-2 lg:px-9 lg:py-3 2xl:px-12 lg:mt-6 rounded-xl lg:text-md"
+                    >
+                        Sign Up Today!
+                    </button>
+                </motion.div>
+            </motion.div>
+            <motion.div
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                    delay: 1,
+                    duration: 1,
+                    ease: "easeInOut",
+                }}
+            >
                 <svg
-                    className="mt-10 w-full sm:w-[30rem] md:w-[20rem] lg:w-[25rem] xl:w-[35rem] 2xl:w-[45rem] h-auto"
+                    className="mt-10 md:m-0 w-full sm:w-[30rem] md:w-[20rem] lg:w-[25rem] xl:w-[35rem] 2xl:w-[45rem] h-auto"
                     xmlns="http://www.w3.org/2000/svg"
                     data-name="Layer 1"
                     viewBox="0 0 878.63037 483"
@@ -162,7 +199,7 @@ export default function Home() {
                         fill="#f50057"
                     />
                 </svg>
-            </div>
+            </motion.div>
         </main>
     );
 }

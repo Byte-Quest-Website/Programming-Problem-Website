@@ -91,12 +91,43 @@ const Page = async () => {
         })
     );
 
+    const solvedProblemsUsers = new Map<string, string[]>();
+
+    await Promise.all(
+        solvedProblems.map(async (problem) => {
+            const solutions = new Set(
+                (
+                    await prisma.solution.findMany({
+                        where: { problemId: problem.id },
+                        select: { userId: true },
+                    })
+                ).map((_) => {
+                    return _.userId;
+                })
+            );
+
+            let names: string[] = [];
+
+            await Promise.all(
+                Array.from(solutions).map(async (user) => {
+                    const name = await prisma.user.findUniqueOrThrow({
+                        where: { id: user },
+                    });
+                    names.push(name.name);
+                })
+            );
+
+            solvedProblemsUsers.set(problem.id, names);
+        })
+    );
+
     return (
         <Dashboard
             user={user}
             problems={userProblems}
             solvedProblems={solvedProblems}
             solutions={solvedProblemsSolutions}
+            solvedProblemsUsers={solvedProblemsUsers}
             problemCount={problemCount}
             totalEasy={totalEasy}
             totalMedium={totalMedium}

@@ -6,11 +6,23 @@ import { PieChart } from "react-minimal-pie-chart";
 import { User, Solution, Problem } from "@prisma/client";
 import Image from "next/image";
 import { Avatar } from "@radix-ui/themes";
+import { useRouter } from "next/navigation";
+import {
+    Table,
+    Badge,
+    Button,
+    Dialog,
+    Flex,
+    Text,
+    TextField,
+} from "@radix-ui/themes";
+import { difficultyColors } from "./problemsTable";
 
 const Dashboard = (props: {
     user: User;
     solutions: Solution[];
     solvedProblems: Problem[];
+    solvedProblemsUsers: Map<string, string[]>;
     problems: Problem[];
     likedProblems: Problem[];
     dislikedProblems: Problem[];
@@ -20,6 +32,7 @@ const Dashboard = (props: {
     totalHard: number;
     rank: number;
 }) => {
+    const router = useRouter();
     const [showLiked, setShowLiked] = useState(true);
     const dashboardDivRef = useRef<HTMLDivElement>(null);
 
@@ -210,16 +223,143 @@ const Dashboard = (props: {
                             </h1>
                         </header>
                         <div className="px-5">
-                            {props.problems.map((problem) => {
-                                return (
-                                    <div
-                                        key={problem.id}
-                                        className="my-3 w-full bg-two h-16 rounded-xl shadow-2xl"
-                                    >
-                                        {problem.title} {problem.id}
-                                    </div>
-                                );
-                            })}
+                            <Table.Root variant="surface">
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.ColumnHeaderCell>
+                                            Problem Name
+                                        </Table.ColumnHeaderCell>
+                                        <Table.ColumnHeaderCell>
+                                            Difficulty
+                                        </Table.ColumnHeaderCell>
+                                        <Table.ColumnHeaderCell>
+                                            Likes
+                                        </Table.ColumnHeaderCell>
+                                        <Table.ColumnHeaderCell>
+                                            Dislikes
+                                        </Table.ColumnHeaderCell>
+                                        <Table.ColumnHeaderCell>
+                                            Created
+                                        </Table.ColumnHeaderCell>
+                                        <Table.ColumnHeaderCell>
+                                            Solved By:
+                                        </Table.ColumnHeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    {props.problems.map((problem) => {
+                                        return (
+                                            <Table.Row
+                                                key={problem.id}
+                                                className="hover:bg-one transition-all duration-100 hover:cursor-pointer"
+                                                onClick={() =>
+                                                    router.push(
+                                                        `/problems/${problem.id}`
+                                                    )
+                                                }
+                                            >
+                                                <Table.RowHeaderCell>
+                                                    {problem.title}
+                                                </Table.RowHeaderCell>
+                                                <Table.Cell>
+                                                    {" "}
+                                                    <Badge
+                                                        color={
+                                                            difficultyColors[
+                                                                problem
+                                                                    .difficulty
+                                                            ]
+                                                        }
+                                                    >
+                                                        {problem.difficulty}
+                                                    </Badge>
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    {problem.likes}
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    {problem.dislikes}
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    {problem.createdAt.toDateString()}
+                                                </Table.Cell>
+                                                <Table.Cell
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                    }}
+                                                >
+                                                    <Dialog.Root>
+                                                        <Dialog.Trigger>
+                                                            <Button>
+                                                                See Users
+                                                            </Button>
+                                                        </Dialog.Trigger>
+
+                                                        <Dialog.Content
+                                                            style={{
+                                                                maxWidth: 450,
+                                                            }}
+                                                        >
+                                                            <Dialog.Title>
+                                                                Problem Solved
+                                                                By
+                                                            </Dialog.Title>
+                                                            <Dialog.Description
+                                                                size="2"
+                                                                mb="4"
+                                                            >
+                                                                List of users
+                                                                who solved your
+                                                                problem:
+                                                            </Dialog.Description>
+
+                                                            <Flex
+                                                                direction="column"
+                                                                gap="3"
+                                                            >
+                                                                {props.solvedProblemsUsers
+                                                                    .get(
+                                                                        problem.id
+                                                                    )
+                                                                    ?.map(
+                                                                        (u) => {
+                                                                            return (
+                                                                                <h1
+                                                                                    key={
+                                                                                        u
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        u
+                                                                                    }
+                                                                                </h1>
+                                                                            );
+                                                                        }
+                                                                    )}
+                                                            </Flex>
+
+                                                            <Flex
+                                                                gap="3"
+                                                                mt="4"
+                                                                justify="end"
+                                                            >
+                                                                <Dialog.Close>
+                                                                    <Button
+                                                                        variant="soft"
+                                                                        color="gray"
+                                                                    >
+                                                                        Close
+                                                                    </Button>
+                                                                </Dialog.Close>
+                                                            </Flex>
+                                                        </Dialog.Content>
+                                                    </Dialog.Root>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                        );
+                                    })}
+                                </Table.Body>
+                            </Table.Root>
                         </div>
                     </section>
                     <div className="bg-one m-2 mt-1 ml-1 rounded-xl shadow-xl overflow-y-scroll no-scrollbar">
@@ -242,27 +382,114 @@ const Dashboard = (props: {
                             </button>
                         </header>
                         <section className="px-5">
-                            {showLiked
-                                ? props.likedProblems.map((problem) => {
-                                      return (
-                                          <div
-                                              key={problem.id}
-                                              className="my-3 w-full bg-two h-16 rounded-xl shadow-2xl"
-                                          >
-                                              {problem.title}
-                                          </div>
-                                      );
-                                  })
-                                : props.dislikedProblems.map((problem) => {
-                                      return (
-                                          <div
-                                              key={problem.id}
-                                              className="my-3 w-full bg-two h-16 rounded-xl shadow-2xl"
-                                          >
-                                              {problem.title}
-                                          </div>
-                                      );
-                                  })}
+                            <Table.Root variant="surface">
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.ColumnHeaderCell>
+                                            Problem Name
+                                        </Table.ColumnHeaderCell>
+                                        <Table.ColumnHeaderCell>
+                                            Difficulty
+                                        </Table.ColumnHeaderCell>
+                                        <Table.ColumnHeaderCell>
+                                            Likes
+                                        </Table.ColumnHeaderCell>
+                                        <Table.ColumnHeaderCell>
+                                            Dislikes
+                                        </Table.ColumnHeaderCell>
+                                        <Table.ColumnHeaderCell>
+                                            Created
+                                        </Table.ColumnHeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    {showLiked
+                                        ? props.likedProblems.map((problem) => {
+                                              return (
+                                                  <Table.Row
+                                                      key={problem.id}
+                                                      className="hover:bg-one transition-all duration-100 hover:cursor-pointer"
+                                                      onClick={() =>
+                                                          router.push(
+                                                              `/problems/${problem.id}`
+                                                          )
+                                                      }
+                                                  >
+                                                      <Table.RowHeaderCell>
+                                                          {problem.title}
+                                                      </Table.RowHeaderCell>
+                                                      <Table.Cell>
+                                                          {" "}
+                                                          <Badge
+                                                              color={
+                                                                  difficultyColors[
+                                                                      problem
+                                                                          .difficulty
+                                                                  ]
+                                                              }
+                                                          >
+                                                              {
+                                                                  problem.difficulty
+                                                              }
+                                                          </Badge>
+                                                      </Table.Cell>
+                                                      <Table.Cell>
+                                                          {problem.likes}
+                                                      </Table.Cell>
+                                                      <Table.Cell>
+                                                          {problem.dislikes}
+                                                      </Table.Cell>
+                                                      <Table.Cell>
+                                                          {problem.createdAt.toDateString()}
+                                                      </Table.Cell>
+                                                  </Table.Row>
+                                              );
+                                          })
+                                        : props.dislikedProblems.map(
+                                              (problem) => {
+                                                  return (
+                                                      <Table.Row
+                                                          key={problem.id}
+                                                          className="hover:bg-one transition-all duration-100 hover:cursor-pointer"
+                                                          onClick={() =>
+                                                              router.push(
+                                                                  `/problems/${problem.id}`
+                                                              )
+                                                          }
+                                                      >
+                                                          <Table.RowHeaderCell>
+                                                              {problem.title}
+                                                          </Table.RowHeaderCell>
+                                                          <Table.Cell>
+                                                              {" "}
+                                                              <Badge
+                                                                  color={
+                                                                      difficultyColors[
+                                                                          problem
+                                                                              .difficulty
+                                                                      ]
+                                                                  }
+                                                              >
+                                                                  {
+                                                                      problem.difficulty
+                                                                  }
+                                                              </Badge>
+                                                          </Table.Cell>
+                                                          <Table.Cell>
+                                                              {problem.likes}
+                                                          </Table.Cell>
+                                                          <Table.Cell>
+                                                              {problem.dislikes}
+                                                          </Table.Cell>
+                                                          <Table.Cell>
+                                                              {problem.createdAt.toDateString()}
+                                                          </Table.Cell>
+                                                      </Table.Row>
+                                                  );
+                                              }
+                                          )}
+                                </Table.Body>
+                            </Table.Root>
                         </section>
                     </div>
                 </div>

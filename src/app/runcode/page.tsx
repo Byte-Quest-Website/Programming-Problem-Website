@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE_MB = 1;
@@ -104,7 +105,16 @@ const Page = () => {
     return (
         <main className="h-screen">
             <div className="flex flex-col items-center justify-center mt-10">
-                <header className="text-center text-eight">
+                <motion.header
+                    initial={{ opacity: 0, y: -25 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                        delay: 0,
+                        duration: 0.75,
+                        ease: "easeOut",
+                    }}
+                    className="text-center text-eight"
+                >
                     <h1 className="font-poppinsbold text-[3.5rem]">Run Code</h1>
                     <p className="font-poppins text-[1rem]">
                         Code will get 25mb of memory and 5 seconds to run <br />
@@ -115,7 +125,7 @@ const Page = () => {
                             })
                             .join(", ")}
                     </p>
-                </header>
+                </motion.header>
 
                 <form
                     onSubmit={(e) => {
@@ -124,7 +134,14 @@ const Page = () => {
                     }}
                 >
                     <div className="flex flex-col lg:flex-row items-center justify-center">
-                        <div
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{
+                                delay: 0.5,
+                                duration: 1,
+                                ease: "easeInOut",
+                            }}
                             onDrop={handleDrop}
                             onDragOver={(e) => e.preventDefault()}
                             className="flex items-center justify-center w-[45rem]"
@@ -171,8 +188,17 @@ const Page = () => {
                                     />
                                 </label>
                             )}
-                        </div>
-                        <div className="p-10">
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, x: 50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{
+                                delay: 0.5,
+                                duration: 1,
+                                ease: "easeInOut",
+                            }}
+                            className="p-10"
+                        >
                             <h1 className="text-[2rem] text-center text-white font-poppinsbold">
                                 Choose Language:
                             </h1>
@@ -229,9 +255,17 @@ const Page = () => {
                             >
                                 Run Code
                             </button>
-                        </div>
+                        </motion.div>
                     </div>
-                    <div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 25 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                            delay: 1.5,
+                            duration: 0.5,
+                            ease: "easeInOut",
+                        }}
+                    >
                         {/* Input field for standard input that will be fed to the code */}
                         <div className="w-full px-3">
                             <label className="block uppercase tracking-wide text-white text-xs font-bold mb-2">
@@ -248,7 +282,7 @@ const Page = () => {
                                 (Will be passed as STDIN to the code)
                             </p>
                         </div>
-                    </div>
+                    </motion.div>
                 </form>
             </div>
         </main>

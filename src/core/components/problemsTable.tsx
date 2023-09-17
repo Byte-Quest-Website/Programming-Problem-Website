@@ -1,12 +1,21 @@
 "use client";
 
 import Fuse from "fuse.js";
+import { motion } from "framer-motion";
 import "@radix-ui/themes/styles.css";
 import React, { useState } from "react";
 import { Problem } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { Table, Badge, TextField, Button } from "@radix-ui/themes";
 import { Theme } from "@radix-ui/themes";
+
+export const difficultyColors: {
+    [key: string]: "green" | "orange" | "red";
+} = {
+    EASY: "green",
+    MEDIUM: "orange",
+    HARD: "red",
+};
 
 const ProblemItem = ({
     problem,
@@ -18,16 +27,17 @@ const ProblemItem = ({
     solved: boolean;
 }) => {
     const router = useRouter();
-    const difficultyColors: {
-        [key: string]: "green" | "orange" | "red";
-    } = {
-        EASY: "green",
-        MEDIUM: "orange",
-        HARD: "red",
-    };
 
+    const Row = motion(Table.Row);
     return (
-        <Table.Row
+        <Row
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+                delay: 0,
+                duration: 1,
+                ease: "easeInOut",
+            }}
             key={problem.id}
             className="hover:bg-one transition-all duration-100 hover:cursor-pointer"
             onClick={() => router.push(`/problems/${problem.id}`)}
@@ -62,7 +72,7 @@ const ProblemItem = ({
                     </a>
                 )}
             </Table.Cell>
-        </Table.Row>
+        </Row>
     );
 };
 
