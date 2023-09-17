@@ -5,6 +5,8 @@ import { getServerSession } from "next-auth/next";
 import prisma from "@/core/db/orm";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
+import SolutionData from "@/core/components/solutionData";
+
 const page = async ({
     params,
 }: {
@@ -54,10 +56,16 @@ const page = async ({
     if (!solution || !problem) {
         return <>404</>;
     }
+    const solutionAuthor = await prisma.user.findUnique({
+        where: { id: solution.userId },
+    });
+    if (!solutionAuthor) {
+        return <>404</>;
+    }
 
     return (
-        <div>
-            <pre className="text-white">{JSON.stringify(solution)}</pre>
+        <div className="mb-14">
+            <SolutionData solution={solution} author={solutionAuthor} />
         </div>
     );
 };
