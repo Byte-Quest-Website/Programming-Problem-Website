@@ -91,7 +91,7 @@ const Navbar = () => {
                                     <li
                                         key={index}
                                         onClick={() => router.push(item.link)}
-                                        className="hover:text-six duration-300 hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-0.5 before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-white before:absolute before:left-0 before:bottom-0 md:text-md lg:text-xl inline mx-5 font-poppins text-white hover:cursor-pointer"
+                                        className="hover:text-white duration-300 hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-0.5 before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-white before:absolute before:left-0 before:bottom-0 md:text-md lg:text-xl inline mx-5 font-poppins text-white hover:cursor-pointer"
                                     >
                                         {item.text}
                                     </li>
