@@ -149,9 +149,14 @@ const Page = () => {
                             className="flex items-center justify-center w-[45rem]"
                         >
                             {selectedFile ? (
-                                <div>
-                                    <p>Selected file: {selectedFile.name}</p>
-                                </div>
+                                <label className="flex flex-col items-center justify-center w-full h-[20rem] border-2 border-dashed rounded-lg cursor-pointer hover:bg-bray-800 bg-[#162131] border-six">
+                                    <h1 className="font-poppinsbold text-2xl">
+                                        Selected File
+                                    </h1>
+                                    <p className="font-poppins ">
+                                        {selectedFile.name}
+                                    </p>
+                                </label>
                             ) : (
                                 <label className="flex flex-col items-center justify-center w-full h-[20rem] border-2 border-dashed rounded-lg cursor-pointer hover:bg-bray-800 bg-[#162131] border-six hover:bg-[#1f2e44]">
                                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
