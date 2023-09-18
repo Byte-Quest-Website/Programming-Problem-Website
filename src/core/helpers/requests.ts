@@ -20,7 +20,7 @@ export async function testCode(
     let response;
     try {
         response = await new Promise((resolve, reject) => {
-            fetch("https://rce.fusionsid.xyz/testcode", {
+            fetch("https://rce.fusionsid.com/testcode", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",

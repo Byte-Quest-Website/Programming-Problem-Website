@@ -5,7 +5,7 @@ const page = async ({ searchParams }: { searchParams: { data: string } }) => {
 
     let response;
     try {
-        response = await fetch("https://rce.fusionsid.xyz/runcode", {
+        response = await fetch("https://rce.fusionsid.com/runcode", {
             method: "POST",
             headers: {
                 Accept: "application/json",
