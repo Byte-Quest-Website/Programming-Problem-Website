@@ -85,6 +85,7 @@ function ProblemsTable({
     problemAuthors: Map<string, string>;
     solvedByUser: Map<string, boolean>;
 }) {
+    const router = useRouter();
     const [searchResults, setSearchResults] = useState(problems);
 
     const options = {
@@ -132,7 +133,13 @@ function ProblemsTable({
                         />
                     </TextField.Root>
                     <div>
-                        <Button>Create</Button>
+                        <Button
+                            onClick={() => {
+                                router.push("/problems/create");
+                            }}
+                        >
+                            Create
+                        </Button>
                     </div>
                 </div>
                 <Table.Root variant="surface">
