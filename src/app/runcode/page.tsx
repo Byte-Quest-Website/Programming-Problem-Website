@@ -3,7 +3,9 @@
 import React from "react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import "@radix-ui/themes/styles.css";
 import { useRouter } from "next/navigation";
+import { Flex, RadioGroup, Text, Checkbox } from "@radix-ui/themes";
 
 const MAX_FILE_SIZE_MB = 1;
 
@@ -202,53 +204,53 @@ const Page = () => {
                             <h1 className="text-[2rem] text-center text-white font-poppinsbold">
                                 Choose Language:
                             </h1>
-                            <ul className="p-3 space-y-1 text-sm text-gray-200">
-                                {supportedLanguages.map((language, index) => {
-                                    return (
-                                        <li key={index}>
-                                            <div
-                                                onClick={() =>
-                                                    setChosenLanguage(language)
-                                                }
-                                                className="flex items-center p-2 rounded hover:bg-gray-600"
-                                            >
-                                                <input
-                                                    type="radio"
-                                                    checked={
-                                                        chosenLanguage ===
-                                                        language
-                                                    }
-                                                    onChange={(e) => {
-                                                        setChosenLanguage(
-                                                            language
-                                                        );
-                                                    }}
-                                                    className="w-4 h-4 text-blue-600 focus:ring-blue-600 ring-offset-gray-700 focus:ring-offset-gray-700 focus:ring-2 bg-gray-600 border-gray-500"
-                                                />
-                                                <label className="w-full ml-2 text-sm font-medium rounded text-gray-300">
-                                                    {capitalize(language)}
-                                                </label>
-                                            </div>
-                                        </li>
-                                    );
-                                })}
+                            <div className="p-3 flex flex-col gap-2 space-y-1 text-sm text-gray-200">
+                                <RadioGroup.Root
+                                    onValueChange={(v) => {
+                                        setChosenLanguage(v);
+                                    }}
+                                    defaultValue="1"
+                                >
+                                    <Flex gap="2" direction="column">
+                                        {supportedLanguages.map(
+                                            (language, index) => {
+                                                return (
+                                                    <label key={index}>
+                                                        <Flex
+                                                            gap="2"
+                                                            align="center"
+                                                        >
+                                                            <RadioGroup.Item
+                                                                value={language}
+                                                            />
+                                                            <Text size="3">
+                                                                {capitalize(
+                                                                    language
+                                                                )}
+                                                            </Text>
+                                                        </Flex>
+                                                    </label>
+                                                );
+                                            }
+                                        )}
+                                    </Flex>
+                                </RadioGroup.Root>
                                 {/* If true next will use its own cache or the api cache to speed  up response */}
-                                <li>
-                                    <div className="flex items-center p-2 rounded">
-                                        <input
-                                            type="checkbox"
-                                            checked={useCache}
-                                            onChange={(e) => {
-                                                setUseCache(!useCache);
-                                            }}
-                                            className="w-4 h-4 bg-gray-600 border-gray-500"
-                                        />
-                                        <label className="w-full font-poppinsbold ml-2 text-sm font-medium rounded text-gray-300">
+                                <Flex>
+                                    <Text size="3">
+                                        <label>
+                                            <Checkbox
+                                                mr="1"
+                                                checked={useCache}
+                                                onCheckedChange={(e) =>
+                                                    setUseCache(Boolean(e))
+                                                }
+                                            />{" "}
                                             Use Cache
                                         </label>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </Text>
+                                </Flex>
+                            </div>
                             <button
                                 type="submit"
                                 className="bg-five text-white md:px-8  w-full py-2 md:text-md lg:text-xl group hover:bg-four duration-300 relative overflow-hidden my-3 rounded-xl text-xl"
@@ -267,7 +269,7 @@ const Page = () => {
                         }}
                     >
                         {/* Input field for standard input that will be fed to the code */}
-                        <div className="w-full px-3">
+                        <div className="w-full">
                             <label className="block uppercase tracking-wide text-white text-xs font-bold mb-2">
                                 Input
                             </label>
