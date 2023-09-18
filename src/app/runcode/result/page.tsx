@@ -43,9 +43,9 @@ const page = async ({ searchParams }: { searchParams: { data: string } }) => {
                         </label>
                         <textarea
                             readOnly
-                            className="max-h-fit font-jetbrains appearance-none block w-full border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none bg-[#232530] text-white"
+                            className="h-96 font-jetbrains appearance-none block w-full border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none bg-[#232530] text-white"
                         >
-                            {jsonData["data"]["stdout"]}
+                            {jsonData["data"]["stdout"].slice(0, 10000)}
                         </textarea>
                     </div>
                     <div className="w-full">
@@ -54,9 +54,9 @@ const page = async ({ searchParams }: { searchParams: { data: string } }) => {
                         </label>
                         <textarea
                             readOnly
-                            className="max-h-fit font-jetbrains appearance-none block w-full border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none bg-[#232530] text-white"
+                            className="h-96 font-jetbrains appearance-none block w-full border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none bg-[#232530] text-white"
                         >
-                            {jsonData["data"]["stderr"]}
+                            {jsonData["data"]["stderr"].slice(0, 10000)}
                         </textarea>
                     </div>
                 </div>
