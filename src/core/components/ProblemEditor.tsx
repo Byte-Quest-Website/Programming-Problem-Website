@@ -23,6 +23,7 @@ const ProblemEditor = (props: {
     const [autosave, setAutosave] = useState(true);
     const [codingTime, setCodingTime] = useState(false);
     const [theme, setTheme] = useState(THEMES.atomone);
+    const [tabSize, setTabSize] = useState(4);
 
     const [fullScreen, setFullScreen] = useState(false);
     const [sizes, setSizes] = useState([250, "30%", "auto"]);
@@ -168,6 +169,7 @@ const ProblemEditor = (props: {
                             autosave={autosave}
                             setAutosave={setAutosave}
                             setTheme={setTheme}
+                            setTabSize={setTabSize}
                             fullScreen={fullScreen}
                             setFullScreen={setFullScreen}
                             problemID={props.problem.id}
@@ -189,6 +191,7 @@ const ProblemEditor = (props: {
                             basicSetup={{
                                 autocompletion: completion,
                                 syntaxHighlighting: syntaxHighlighting,
+                                tabSize: tabSize,
                             }}
                         />
                     </section>

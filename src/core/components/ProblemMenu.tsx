@@ -13,6 +13,7 @@ const ProblemMenu = ({
     setAutosave,
     problemID,
     setTheme,
+    setTabSize,
 }: {
     fullScreen;
     setFullScreen;
@@ -20,6 +21,7 @@ const ProblemMenu = ({
     setAutosave;
     problemID;
     setTheme;
+    setTabSize;
 }) => {
     return (
         <div className="flex gap-6 m-2">
@@ -45,6 +47,29 @@ const ProblemMenu = ({
                 </label>
             </div>
 
+            <div className="flex gap-2 items-center">
+                <h1 className="text-white font-poppins">Tabsize:</h1>
+                <Select.Root
+                    defaultValue="4"
+                    onValueChange={(value) => {
+                        setTabSize(Number(value));
+                    }}
+                >
+                    <Select.Trigger placeholder="Select Tabsize" />
+                    <Select.Content>
+                        <Select.Group>
+                            <Select.Label>Tab Sizes</Select.Label>
+                            {[2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => {
+                                return (
+                                    <Select.Item key={key} value={String(key)}>
+                                        {key}
+                                    </Select.Item>
+                                );
+                            })}
+                        </Select.Group>
+                    </Select.Content>
+                </Select.Root>
+            </div>
             <div className="flex gap-2 items-center">
                 <h1 className="text-white font-poppins">Theme:</h1>
                 <Select.Root
