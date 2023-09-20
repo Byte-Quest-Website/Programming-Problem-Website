@@ -54,12 +54,20 @@ const ProblemEditor = (props: {
             return THEMES[key] === theme;
         });
         // if light mode is selected remove auto complete and syntax highlighting
-        if (themeName?.toLowerCase().includes("light")) {
+        const lightModeThemesExtra = [
+            "eclipse",
+            "bbedit",
+            "noctislilac",
+            "tokyonightday",
+        ];
+        if (
+            themeName?.toLowerCase().includes("light") ||
+            lightModeThemesExtra.includes(themeName?.toLowerCase() ?? "")
+        ) {
             alert(
-                "You sir have commited a war crime by using light mode\nThere goes your syntax highlighting and autocomplete"
+                "You sir have commited a war crime by using light mode\nThere goes your autocomplete"
             );
             setCompletion(false);
-            setSyntaxHighlighting(false);
             return;
         }
         setCompletion(true);
