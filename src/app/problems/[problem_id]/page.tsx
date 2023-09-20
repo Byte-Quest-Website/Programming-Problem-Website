@@ -36,6 +36,11 @@ const page = async ({ params }: { params: { problem_id: string } }) => {
         return <>404</>;
     }
 
+    const userIsOwner = user.id === author.id;
+    if (!problem.verified && !userIsOwner) {
+        return <>404</>;
+    }
+
     return (
         <main>
             <ProblemEditor problem={problem} author={author} user={user} />

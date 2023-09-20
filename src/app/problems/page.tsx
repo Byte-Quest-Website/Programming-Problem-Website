@@ -11,7 +11,9 @@ const Problems = async () => {
         return <div className="text-white">Please Log In</div>;
     }
 
-    const problems = await prisma.problem.findMany();
+    const problems = await prisma.problem.findMany({
+        where: { verified: true },
+    });
     const problemAuthors = new Map<string, string>();
     await Promise.all(
         problems.map(async (p) => {
