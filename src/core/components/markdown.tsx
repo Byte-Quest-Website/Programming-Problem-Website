@@ -7,6 +7,7 @@ import React from "react";
 const Markdown = (props: { markdown: string }) => {
     return (
         <ReactMarkdown
+            className="leading-6"
             rehypePlugins={[rehypeHighlight]}
             remarkPlugins={[remarkGfm]}
         >
