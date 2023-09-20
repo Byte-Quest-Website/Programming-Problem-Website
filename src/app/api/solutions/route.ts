@@ -191,6 +191,24 @@ export async function POST(request: NextRequest) {
         );
     }
 
+    if (!problem.verified) {
+        if (userId !== problem.userId) {
+            return NextResponse.json(
+                {
+                    success: true,
+                    detail: "you canot solve an unverified problem",
+                },
+                { status: 403 }
+            );
+        }
+        await prisma.problem.update({
+            where: { id: problem.id },
+            data: {
+                verified: true,
+            },
+        });
+    }
+
     const solution = await prisma.solution.create({
         data: {
             code: code,

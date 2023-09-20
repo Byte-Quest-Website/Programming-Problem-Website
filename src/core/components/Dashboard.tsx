@@ -7,15 +7,7 @@ import { User, Solution, Problem } from "@prisma/client";
 import Image from "next/image";
 import { Avatar } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
-import {
-    Table,
-    Badge,
-    Button,
-    Dialog,
-    Flex,
-    Text,
-    TextField,
-} from "@radix-ui/themes";
+import { Table, Badge, Button, Dialog, Flex, Tooltip } from "@radix-ui/themes";
 import { difficultyColors } from "./problemsTable";
 
 const Dashboard = (props: {
@@ -288,72 +280,86 @@ const Dashboard = (props: {
                                                         e.stopPropagation();
                                                     }}
                                                 >
-                                                    <Dialog.Root>
-                                                        <Dialog.Trigger>
-                                                            <Button>
-                                                                See Users
-                                                            </Button>
-                                                        </Dialog.Trigger>
+                                                    {problem.verified ? (
+                                                        <Dialog.Root>
+                                                            <Dialog.Trigger>
+                                                                <Button>
+                                                                    See Users
+                                                                </Button>
+                                                            </Dialog.Trigger>
 
-                                                        <Dialog.Content
-                                                            style={{
-                                                                maxWidth: 450,
-                                                            }}
-                                                        >
-                                                            <Dialog.Title>
-                                                                Problem Solved
-                                                                By
-                                                            </Dialog.Title>
-                                                            <Dialog.Description
-                                                                size="2"
-                                                                mb="4"
+                                                            <Dialog.Content
+                                                                style={{
+                                                                    maxWidth: 450,
+                                                                }}
                                                             >
-                                                                List of users
-                                                                who solved your
-                                                                problem:
-                                                            </Dialog.Description>
+                                                                <Dialog.Title>
+                                                                    Problem
+                                                                    Solved By
+                                                                </Dialog.Title>
+                                                                <Dialog.Description
+                                                                    size="2"
+                                                                    mb="4"
+                                                                >
+                                                                    List of
+                                                                    users who
+                                                                    solved your
+                                                                    problem:
+                                                                </Dialog.Description>
 
-                                                            <Flex
-                                                                direction="column"
-                                                                gap="3"
-                                                            >
-                                                                {props.solvedProblemsUsers
-                                                                    .get(
-                                                                        problem.id
-                                                                    )
-                                                                    ?.map(
-                                                                        (u) => {
-                                                                            return (
-                                                                                <h1
-                                                                                    key={
-                                                                                        u
-                                                                                    }
-                                                                                >
-                                                                                    {
-                                                                                        u
-                                                                                    }
-                                                                                </h1>
-                                                                            );
-                                                                        }
-                                                                    )}
-                                                            </Flex>
+                                                                <Flex
+                                                                    direction="column"
+                                                                    gap="3"
+                                                                >
+                                                                    {props.solvedProblemsUsers
+                                                                        .get(
+                                                                            problem.id
+                                                                        )
+                                                                        ?.map(
+                                                                            (
+                                                                                u
+                                                                            ) => {
+                                                                                return (
+                                                                                    <h1
+                                                                                        key={
+                                                                                            u
+                                                                                        }
+                                                                                    >
+                                                                                        {
+                                                                                            u
+                                                                                        }
+                                                                                    </h1>
+                                                                                );
+                                                                            }
+                                                                        )}
+                                                                </Flex>
 
-                                                            <Flex
-                                                                gap="3"
-                                                                mt="4"
-                                                                justify="end"
+                                                                <Flex
+                                                                    gap="3"
+                                                                    mt="4"
+                                                                    justify="end"
+                                                                >
+                                                                    <Dialog.Close>
+                                                                        <Button
+                                                                            variant="soft"
+                                                                            color="gray"
+                                                                        >
+                                                                            Close
+                                                                        </Button>
+                                                                    </Dialog.Close>
+                                                                </Flex>
+                                                            </Dialog.Content>
+                                                        </Dialog.Root>
+                                                    ) : (
+                                                        <Tooltip content="You must solve the problem before it can be listed for public">
+                                                            <Badge
+                                                                className="hover:cursor-pointer"
+                                                                color={"red"}
                                                             >
-                                                                <Dialog.Close>
-                                                                    <Button
-                                                                        variant="soft"
-                                                                        color="gray"
-                                                                    >
-                                                                        Close
-                                                                    </Button>
-                                                                </Dialog.Close>
-                                                            </Flex>
-                                                        </Dialog.Content>
-                                                    </Dialog.Root>
+                                                                Unverified!
+                                                            </Badge>
+                                                        </Tooltip>
+                                                    )}
                                                 </Table.Cell>
                                             </Table.Row>
                                         );
