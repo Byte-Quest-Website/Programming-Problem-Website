@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse, NextRequest } from "next/server";
 
 import prisma from "@/core/db/orm";
+import redis from "@/core/db/redis";
 import { authOptions } from "../auth/[...nextauth]/route";
 
 type RequestData = {
@@ -102,6 +103,19 @@ export async function PATCH(request: NextRequest) {
             { status: 400 }
         );
     }
+
+    const limit = await redis.get(`${userId}-like-limit`);
+    if (limit !== null) {
+        return NextResponse.json(
+            {
+                success: false,
+                detail: "chill down my guy, its really not that deep",
+            },
+            { status: 429 }
+        );
+    }
+    await redis.set(`${userId}-like-limit`, "iloverickastley");
+    await redis.expire(`${userId}-like-limit`, 3);
 
     const user = await prisma.user.findUnique({
         where: { id: userId },
