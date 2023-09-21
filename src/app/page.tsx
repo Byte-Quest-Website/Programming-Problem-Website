@@ -2,8 +2,11 @@
 
 import { motion } from "framer-motion";
 import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+    const { data: session } = useSession();
+
     return (
         <main className="flex-col md:flex-row flex items-center justify-center h-full mt-16 mb-24 md:mt-32">
             <motion.div className="flex flex-col md:inline justify-center items-center">
@@ -36,22 +39,26 @@ export default function Home() {
                     Lets enhance your skills through exciting challenges and
                     conquer the world of coding
                 </motion.p>
-                <motion.div
-                    initial={{ opacity: 0, y: 100 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                        delay: 1,
-                        duration: 1,
-                        ease: "easeInOut",
-                    }}
-                >
-                    <button
-                        onClick={() => signIn()}
-                        className="bg-five transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-four duration-300 text-sm px-6 py-3 text-white sm:mb-5 sm:text-lg sm:px-10 sm:py-3 text-center md:text-left md:text-sm md:px-4 md:py-2 lg:px-9 lg:py-3 2xl:px-12 lg:mt-6 rounded-xl lg:text-md"
+                {session ? (
+                    <></>
+                ) : (
+                    <motion.div
+                        initial={{ opacity: 0, y: 100 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                            delay: 1,
+                            duration: 1,
+                            ease: "easeInOut",
+                        }}
                     >
-                        Sign Up Today!
-                    </button>
-                </motion.div>
+                        <button
+                            onClick={() => signIn()}
+                            className="bg-five transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-four duration-300 text-sm px-6 py-3 text-white sm:mb-5 sm:text-lg sm:px-10 sm:py-3 text-center md:text-left md:text-sm md:px-4 md:py-2 lg:px-9 lg:py-3 2xl:px-12 lg:mt-6 rounded-xl lg:text-md"
+                        >
+                            Sign Up Today!
+                        </button>
+                    </motion.div>
+                )}
             </motion.div>
             <motion.div
                 initial={{ opacity: 0, x: 100 }}
