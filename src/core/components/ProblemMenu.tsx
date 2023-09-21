@@ -14,6 +14,7 @@ const ProblemMenu = ({
     problemID,
     setTheme,
     setTabSize,
+    tabSize,
 }: {
     fullScreen;
     setFullScreen;
@@ -21,6 +22,7 @@ const ProblemMenu = ({
     setAutosave;
     problemID;
     setTheme;
+    tabSize;
     setTabSize;
 }) => {
     return (
@@ -43,16 +45,21 @@ const ProblemMenu = ({
                     className="w-4 h-4 bg-gray-600 border-gray-500"
                 />
                 <label className="ml-2 text-md font-poppins text-white">
-                    Autosave
+                    Save Code
                 </label>
             </div>
 
             <div className="flex gap-2 items-center">
                 <h1 className="text-white font-poppins">Tabsize:</h1>
                 <Select.Root
-                    defaultValue="4"
+                    defaultValue={String(tabSize)}
+                    value={String(tabSize)}
                     onValueChange={(value) => {
                         setTabSize(Number(value));
+                        localStorage.setItem(
+                            `${problemID}-editor-tabsize`,
+                            value
+                        );
                     }}
                 >
                     <Select.Trigger placeholder="Select Tabsize" />

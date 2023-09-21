@@ -33,10 +33,6 @@ const ProblemEditor = (props: {
 
     const editorDivRef = useRef<HTMLDivElement>(null);
 
-    const defaultBoilerplateCode = `def ${
-        props.problem.functionName
-    }(${props.problem.parameterNames.join(", ")}):\n  pass`;
-
     useEffect(() => {
         // if full screen is selected resize breif div to take 0 width
         if (fullScreen) {
@@ -111,6 +107,18 @@ const ProblemEditor = (props: {
     }, [code]);
 
     useEffect(() => {
+        const savedTabSize = localStorage.getItem(
+            `${props.problem.id}-editor-tabsize`
+        );
+        if (savedTabSize) {
+            setTabSize(Number(savedTabSize));
+        }
+        const defaultBoilerplateCode = `def ${
+            props.problem.functionName
+        }(${props.problem.parameterNames.join(", ")}):\n${" ".repeat(
+            Number(savedTabSize)
+        )}pass`;
+
         const noAutoSave =
             localStorage.getItem(`${props.problem.id}-editor-autosave`) ===
             "false";
@@ -181,6 +189,7 @@ const ProblemEditor = (props: {
                             fullScreen={fullScreen}
                             setFullScreen={setFullScreen}
                             problemID={props.problem.id}
+                            tabSize={tabSize}
                         />
                     </section>
 
