@@ -12,7 +12,7 @@ type RequestData = {
     problemId: string;
 };
 
-export const NewProblem = z.object({
+const NewProblem = z.object({
     title: z.string(),
     description: z.string(),
     memoryLimit: z.number().min(1).max(50).default(25),
