@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Job } from "@prisma/client";
 
 const testCodeResponseObject = z.object({
     success: z.literal(true),
@@ -10,6 +9,22 @@ const testCodeResponseObject = z.object({
 const getJobStatusResponseObject = z.object({
     success: z.literal(true),
     completed: z.boolean(),
+});
+
+export const NewProblem = z.object({
+    title: z.string(),
+    description: z.string(),
+    memoryLimit: z.number().min(1).max(50).default(25),
+    timeLimit: z.number().min(0.1).max(10).default(1),
+    difficulty: z.union([
+        z.literal("EASY"),
+        z.literal("MEDIUM"),
+        z.literal("HARD"),
+    ]),
+    solutionLink: z.string().url(),
+    functionName: z.string(),
+    parameterNames: z.array(z.string()),
+    testsJsonFile: z.string(),
 });
 
 export async function testCode(
@@ -139,6 +154,38 @@ export async function createNewSolution(
         return;
     }
     return response.solutionId as string;
+}
+
+export async function createNewProblem(
+    data: z.infer<typeof NewProblem>
+): Promise<string | void> {
+    let response;
+    try {
+        response = await new Promise((resolve, reject) => {
+            fetch("/api/problems", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                cache: "no-store",
+                body: JSON.stringify({
+                    ...data,
+                }),
+            })
+                .then((response) => response.json())
+                .then((json) => resolve(json))
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    } catch (err) {
+        return console.log("FAILED TO MAKE REQUEST POST SOLUTION REQUEST", err);
+    }
+    if (!response.success || response.problemId === undefined) {
+        return;
+    }
+    return response.problemId as string;
 }
 
 export async function updateProblemVote(
