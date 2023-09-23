@@ -12,6 +12,22 @@ type RequestData = {
     problemId: string;
 };
 
+export const NewProblem = z.object({
+    title: z.string(),
+    description: z.string(),
+    memoryLimit: z.number().min(1).max(50).default(25),
+    timeLimit: z.number().min(0.1).max(10).default(1),
+    difficulty: z.union([
+        z.literal("EASY"),
+        z.literal("MEDIUM"),
+        z.literal("HARD"),
+    ]),
+    solutionLink: z.string().url(),
+    functionName: z.string(),
+    parameterNames: z.array(z.string()),
+    testsJsonFile: z.string(),
+});
+
 export async function GET(request: NextRequest) {
     const session = await getServerSession(authOptions);
 
@@ -63,6 +79,89 @@ export async function GET(request: NextRequest) {
         },
         { status: 404 }
     );
+}
+
+export async function POST(request: NextRequest) {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+        return NextResponse.json(
+            {
+                success: false,
+                detail: "Not Authenticated",
+            },
+            { status: 401 }
+        );
+    }
+
+    const requestData = NewProblem.safeParse(await request.json());
+    if (!requestData.success) {
+        return NextResponse.json(
+            {
+                success: false,
+                detail: "Invalid problem data",
+            },
+            { status: 400 }
+        );
+    }
+    const { data } = requestData;
+    let jsonData: [any[], any][];
+    try {
+        jsonData = JSON.parse(data.testsJsonFile);
+        if (!Array.isArray(jsonData)) {
+            throw Error("Not array");
+        }
+    } catch {
+        return NextResponse.json(
+            {
+                success: false,
+                detail: "Invalid problem data",
+            },
+            { status: 400 }
+        );
+    }
+    try {
+        const parameterCount = data.parameterNames.length;
+        const validCases = jsonData.every((t) => t[0].length == parameterCount);
+        if (!validCases) {
+            throw Error("Not correct lengths");
+        }
+    } catch {
+        return NextResponse.json(
+            {
+                success: false,
+                detail: "Invalid problem data",
+            },
+            { status: 400 }
+        );
+    }
+
+    const { testsJsonFile, ...problemData } = data;
+    try {
+        const problem = await prisma.problem.create({
+            data: {
+                ...problemData,
+                tests: jsonData,
+                userId: session.user.id,
+            },
+        });
+        return NextResponse.json(
+            {
+                success: true,
+                detail: "success creating problem",
+                problemId: problem.id,
+            },
+            { status: 200 }
+        );
+    } catch {
+        return NextResponse.json(
+            {
+                success: false,
+                detail: "failed creating problem",
+            },
+            { status: 500 }
+        );
+    }
 }
 
 export async function PATCH(request: NextRequest) {
