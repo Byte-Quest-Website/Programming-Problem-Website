@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import WavyText from "@/core/components/wavy";
 
 export default function Home() {
     const { data: session } = useSession();
@@ -10,7 +11,17 @@ export default function Home() {
     return (
         <main className="flex-col md:flex-row flex items-center justify-center h-full mt-16 mb-24 md:mt-32">
             <motion.div className="flex flex-col md:inline justify-center items-center">
-                <motion.h1
+                <WavyText
+                    className="text-[#EDF2F4] text-[2.15rem] sm:text-[3rem] font-poppinsbold text-center md:text-left md:text-[2rem] lg:text-[3rem] xl:text-[3.5rem] 2xl:text-[4rem]"
+                    text="Achieve Mastery"
+                    replay
+                />
+                <WavyText
+                    className="text-[#EDF2F4] text-[2.15rem] sm:text-[3rem] font-poppinsbold text-center md:text-left md:text-[2rem] lg:text-[3rem] xl:text-[3.5rem] 2xl:text-[4rem]"
+                    text="Through a Challenge"
+                    replay
+                />
+                {/* <motion.h1
                     initial={{ opacity: 0, y: 100 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
@@ -23,7 +34,7 @@ export default function Home() {
                     Achieve Mastery
                     <br />
                     Through a Challenge
-                </motion.h1>
+                </motion.h1> */}
                 <motion.p
                     initial={{ opacity: 0, y: 100 }}
                     animate={{ opacity: 1, y: 0 }}
