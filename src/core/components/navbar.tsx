@@ -15,7 +15,7 @@ const Navbar = () => {
 
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [showMobileNav, setShowMobileNav] = useState(false);
-    const [showNavLogoText, setShowNavLogoText] = useState(false);
+    const [showNavLogoText, setShowNavLogoText] = useState(true);
 
     // Run on page load to check weather to load mobile nav or not
     useEffect(() => {
