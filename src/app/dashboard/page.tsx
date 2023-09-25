@@ -24,6 +24,25 @@ const Page = async () => {
             userId: user.id,
         },
     });
+    await Promise.all(
+        userProblems.map(async (p) => {
+            p.likes = await prisma.user.count({
+                where: {
+                    likedProblems: {
+                        has: p.id,
+                    },
+                },
+            });
+            p.dislikes = await prisma.user.count({
+                where: {
+                    dislikedProblems: {
+                        has: p.id,
+                    },
+                },
+            });
+            return p;
+        })
+    );
 
     const solvedProblemsSolutions = await prisma.solution.findMany({
         where: {
@@ -75,9 +94,24 @@ const Page = async () => {
     await Promise.all(
         user.likedProblems.map(async (id) => {
             const p = await prisma.problem.findUnique({ where: { id: id } });
-            if (p) {
-                likedProblems.push(p);
+            if (!p) {
+                return;
             }
+            p.likes = await prisma.user.count({
+                where: {
+                    likedProblems: {
+                        has: p.id,
+                    },
+                },
+            });
+            p.dislikes = await prisma.user.count({
+                where: {
+                    dislikedProblems: {
+                        has: p.id,
+                    },
+                },
+            });
+            likedProblems.push(p);
         })
     );
 
@@ -85,9 +119,24 @@ const Page = async () => {
     await Promise.all(
         user.dislikedProblems.map(async (id) => {
             const p = await prisma.problem.findUnique({ where: { id: id } });
-            if (p) {
-                dislikedProblems.push(p);
+            if (!p) {
+                return;
             }
+            p.likes = await prisma.user.count({
+                where: {
+                    likedProblems: {
+                        has: p.id,
+                    },
+                },
+            });
+            p.dislikes = await prisma.user.count({
+                where: {
+                    dislikedProblems: {
+                        has: p.id,
+                    },
+                },
+            });
+            dislikedProblems.push(p);
         })
     );
 

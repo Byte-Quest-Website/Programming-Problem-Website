@@ -34,6 +34,26 @@ const Problems = async () => {
         })
     );
 
+    await Promise.all(
+        problems.map(async (p) => {
+            p.likes = await prisma.user.count({
+                where: {
+                    likedProblems: {
+                        has: p.id,
+                    },
+                },
+            });
+            p.dislikes = await prisma.user.count({
+                where: {
+                    dislikedProblems: {
+                        has: p.id,
+                    },
+                },
+            });
+            return p;
+        })
+    );
+
     return (
         <main className="p-10 h-full">
             <header className="flex items-center justify-center mb-10">

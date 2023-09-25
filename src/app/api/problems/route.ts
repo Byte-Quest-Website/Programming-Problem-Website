@@ -203,19 +203,6 @@ export async function PATCH(request: NextRequest) {
         );
     }
 
-    const limit = await redis.get(`${userId}-like-limit`);
-    if (limit !== null) {
-        return NextResponse.json(
-            {
-                success: false,
-                detail: "chill down my guy, its really not that deep",
-            },
-            { status: 429 }
-        );
-    }
-    await redis.set(`${userId}-like-limit`, "iloverickastley");
-    await redis.expire(`${userId}-like-limit`, 3);
-
     const user = await prisma.user.findUnique({
         where: { id: userId },
     });
@@ -246,13 +233,6 @@ export async function PATCH(request: NextRequest) {
                 },
             },
         });
-        await prisma.problem.update({
-            where: { id: problem.id },
-            data: {
-                likes: { decrement: alreadyLiked ? 1 : 0 },
-                dislikes: { increment: 1 },
-            },
-        });
     } else if (state == 1 && !alreadyLiked) {
         await prisma.user.update({
             where: { id: user.id },
@@ -265,13 +245,6 @@ export async function PATCH(request: NextRequest) {
                 likedProblems: {
                     set: [...user.likedProblems, problem.id],
                 },
-            },
-        });
-        await prisma.problem.update({
-            where: { id: problem.id },
-            data: {
-                dislikes: { decrement: alreadyDisliked ? 1 : 0 },
-                likes: { increment: 1 },
             },
         });
     } else if (alreadyLiked || alreadyDisliked) {
@@ -288,18 +261,6 @@ export async function PATCH(request: NextRequest) {
                 },
             },
         });
-        if (alreadyLiked) {
-            await prisma.problem.update({
-                where: { id: problem.id },
-                data: { likes: { decrement: 1 } },
-            });
-        }
-        if (alreadyDisliked) {
-            await prisma.problem.update({
-                where: { id: problem.id },
-                data: { dislikes: { decrement: 1 } },
-            });
-        }
     }
 
     return NextResponse.json(

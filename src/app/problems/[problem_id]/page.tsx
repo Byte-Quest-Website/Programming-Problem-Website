@@ -41,6 +41,21 @@ const page = async ({ params }: { params: { problem_id: string } }) => {
         return <>404</>;
     }
 
+    problem.likes = await prisma.user.count({
+        where: {
+            likedProblems: {
+                has: problem.id,
+            },
+        },
+    });
+    problem.dislikes = await prisma.user.count({
+        where: {
+            dislikedProblems: {
+                has: problem.id,
+            },
+        },
+    });
+
     return (
         <main>
             <ProblemEditor problem={problem} author={author} user={user} />
